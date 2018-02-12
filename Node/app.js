@@ -8,7 +8,8 @@ const express = require('express'),
       path = require('path'),
       http = require('http'),
       bodyParser = require('body-parser'),
-      routes = require('./routes/main');
+      rootPath = require('./routes/root'),
+      filesPath = require('./routes/files/files');
 
 // App setup
 const app = express();
@@ -18,7 +19,8 @@ app.use(express.static(__dirname + '/public'));
 app.set('view engine','ejs');
 
 // App routing
-app.use('/', routes);
+app.use('/', rootPath);
+app.use('/files', filesPath)
 
 // Server setup & Listen
 const server = http.createServer(app);
