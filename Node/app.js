@@ -9,7 +9,8 @@ const express = require('express'),
       http = require('http'),
       bodyParser = require('body-parser'),
       rootPath = require('./routes/root'),
-      filesPath = require('./routes/files/files');
+      filesPath = require('./routes/files/files'),
+      usersPath = require('./routes/users/user');
 
 // App setup
 const app = express();
@@ -21,6 +22,7 @@ app.set('view engine','ejs');
 // App routing
 app.use('/', rootPath);
 app.use('/files', filesPath)
+app.use('/users', usersPath)
 
 // Server setup & Listen
 const server = http.createServer(app);

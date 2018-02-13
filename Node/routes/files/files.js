@@ -1,26 +1,11 @@
 const express = require('express'),
-      router = express.Router();
+      router = express.Router()
+      fileController = require('../../controllers/file-controller');
 
-router.get('/', (req,res) => {
-    res.render('files/index');
-});
+router.get('/', fileController.file_route_get);
 
-router.get('/file/:id', (req,res) => {
-    const fileId = req.params.id;
-    if (fileId){
-        res.render('files/file', {fileId: fileId});    
-    }else{
-        res.render('files/file');
-    }
-});
+router.get('/file/:id', fileController.file_id_get);
 
-router.get('/file/transfer/:id', (req,res) => {
-    const fileId = req.params.id;
-    if (fileId){
-        res.render('files/transfer', {fileId: fileId});    
-    }else{
-        res.render('files/transfer');
-    }
-});
+router.get('/file/transfer/:id', fileController.file_transfer_get);
     
 module.exports = router;
