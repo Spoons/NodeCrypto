@@ -17,7 +17,8 @@ const file_model = {
     },
 
     write_new_file: function() { 
-        db.run("INSERT INTO files (id, name, data) VALUES ($id, $name, $data)");
+
+        db.prepare("INSERT INTO files (id, name, data) VALUES ($id, $name, $data)");
     },
 
     print: function() {
@@ -27,8 +28,8 @@ const file_model = {
 
     //Below here is testing code
     create_test_table: function() {
-        db.run("DROP TABLE files");
-        db.run("CREATE TABLE files (id INTEGER, name TEXT, data BLOB)");
+        db.prepare("DROP TABLE files").run();
+        db.prepare("CREATE TABLE files (id INTEGER, name TEXT, data BLOB)").run();
         console.log("table create");
     }
 }
