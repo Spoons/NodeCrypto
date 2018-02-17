@@ -19,3 +19,6 @@ exports.file_transfer_get = (req,res) => {
         res.render('files/transfer');
     }
 }
+
+let file_controller = {
+}
