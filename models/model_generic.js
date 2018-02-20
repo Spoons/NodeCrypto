@@ -2,36 +2,21 @@ var Database = require('better-sqlite3');
 var db = new Database('db.db');
 
 const model_generic = {
-    id: null,
-    name: null,
-    data: null,
-   // owner: null,
-   // key: null,
 
-    update: function(name, data) {
-        this.id = this.id;
-        this.name = name;
-        this.data = data;
-
-        this.write();
-    },
-
-    
-    update_with_id: function(id, name, data) {
-        this.id = id;
-        update(name, data);
+    is_child_property: function(property) {
+        return (this.hasOwnProperty(property) && typeof (this[property]) !== "function");
     },
 
     load_by_id: function(id) {
         let q = `SELECT * FROM files WHERE id=${id}`;
         let row = db.prepare(q).get();
 
+        //console.log(row);
         for (var property in this) {
-            if (this.hasOwnProperty(property)) {
-                this[property] = row.property;
+            if (this.is_child_property(property) == true) {
+                this[property] = row[property];
             }
         }
-
     },
 
     write: function() { 
@@ -42,7 +27,7 @@ const model_generic = {
         let values = "(";
 
         for (var property in this) {
-            if (this.hasOwnProperty(property)) {
+            if (this.is_child_property(property) == true) {
                 if (this.id == null && property == "id") {
                     continue;
                 }
@@ -57,7 +42,7 @@ const model_generic = {
         values+=")";
 
         let query = 'INSERT OR REPLACE INTO files' + columns + " VALUES " + values + ";";
-        console.log(query);
+        //console.log(query);
         let results = db.prepare(query).run();
 
         if(this.id == null) {
@@ -70,7 +55,7 @@ const model_generic = {
         //console.log("id: " + this.id, this.name, this.data)
         let output = "";
         for (var property in this) {
-            if (this.hasOwnProperty(property)) {
+            if (this.is_child_property(property) == true) {
                 output+=property+": "+this[property]+", ";
             }
         }
@@ -79,7 +64,8 @@ const model_generic = {
 
     ensure_not_null: function() {
         for (var property in this) {
-            if (this.hasOwnProperty(property)) {
+            if (this.is_child_property() == true) {
+                //console.log(property);
                 if (this[property] == null) {
                     return (false);
                 }
@@ -90,32 +76,9 @@ const model_generic = {
     },
         
 
-    //Below here is testing code
-    create_migration_table: function() {
-        db.prepare("DROP TABLE IF EXISTS files").run();
-        db.prepare("CREATE TABLE files (id INTEGER PRIMARY KEY, name TEXT, data BLOB)").run();
-        db.prepare("CREATE UNIQUE INDEX files_idx ON files(id)").run();
-        console.log("table create");
-    }
 }
 
-
-const sanity_test = function() {
-
-    const test_model = Object.create(file_model);
-    test_model.create_migration_table();
-
-    test_model.update("cats", "0101010101010");
-    test_model.print();
-    test_model.print();
-
-    const new_model = Object.create(file_model);
-    new_model.load_by_id(1);
-    new_model.print();
-    new_model.print();
-            
+module.exports = {
+    model_generic: model_generic,
+    db: db
 }
-
-//sanity_test();
-
-module.exports = model_generic
