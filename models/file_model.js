@@ -67,7 +67,7 @@ const sanity_test = function() {
 
     const test_model = Object.create(file_model);
 
-    test_model.set(1, "gay", "0101010101010");
+    test_model.set(1, "cats", "0101010101010");
     test_model.print();
     test_model.write_new_file()
 
