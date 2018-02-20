@@ -53,7 +53,7 @@ const model_generic = {
 
     },
 
-    print: function() {
+    to_string: function() {
         //console.log("id: " + this.id, this.name, this.data)
         let output = "";
         for (var property in this) {
@@ -61,7 +61,11 @@ const model_generic = {
                 output+=property+": "+this[property]+", ";
             }
         }
-        console.log(output);
+        return(output);
+    },
+
+    print: function() {
+        console.log(this.to_string());
     },
 
     ensure_not_null: function() {
