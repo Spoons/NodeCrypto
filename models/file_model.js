@@ -26,9 +26,11 @@ const file_model = {
         let q = `SELECT * FROM files WHERE id=${id}`;
         let row = db.prepare(q).get();
 
-        this.id = row.id;
-        this.name = row.name;
-        this.data = data;
+        for (var property in this) {
+            if (this.hasOwnProperty(property)) {
+                this[property] = row.property;
+            }
+        }
 
     },
 
@@ -36,17 +38,30 @@ const file_model = {
         if (this.ensure_not_null == false) {
             console.log("Writing null file model!!");
         }
+        let columns = "(";
+        let values = "(";
 
-        id = this.id;
-        name = this.name;
-        data = this.data;
-        if (id != null) {
-            var query = `INSERT OR REPLACE INTO files (id, name, data) VALUES ('${id}', '${name}', '${data}')`;
-            db.prepare(query).run();
-        } else {
-            var query = `INSERT OR REPLACE INTO files (name, data) VALUES ('${name}', '${data}')`;
-            let row = db.prepare(query).run();
-            this.id = row.lastInsertROWID;
+        for (var property in this) {
+            if (this.hasOwnProperty(property)) {
+                if (this.id == null && property == "id") {
+                    continue;
+                }
+                columns += property + ", ";
+                value = this[property];
+                values += `'${value}', `;
+            }
+        }
+        columns = columns.substring(0,columns.length-2);
+        columns+=")";
+        values = values.substring(0,values.length-2);
+        values+=")";
+
+        let query = 'INSERT OR REPLACE INTO files' + columns + " VALUES " + values + ";";
+        console.log(query);
+        let results = db.prepare(query).run();
+
+        if(this.id == null) {
+            this.id = results.lastInsertROWID;
         }
 
     },
