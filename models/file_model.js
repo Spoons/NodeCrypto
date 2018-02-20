@@ -27,30 +27,24 @@ let file_model = function() {
             db.prepare("CREATE TABLE files (id INTEGER PRIMARY KEY, name TEXT, data BLOB)").run();
             db.prepare("CREATE UNIQUE INDEX files_idx ON files(id)").run();
             console.log("table create");
-        }
+        },
     }
+
 }
 
 file_model.prototype = generic_model; 
+file_model.sanity = function() {
+            const test_model = new file_model();
+            test_model.testing.create_migration_table();
 
+            test_model.update("cats", "0101010101010");
+            test_model.print();
 
-const sanity_test = function() {
+            const new_model = new file_model(); 
 
-    const test_model = new file_model();
-    test_model.testing.create_migration_table();
+            new_model.load_by_id(1);
+            new_model.print();
+                
+        }
 
-    test_model.update("cats", "0101010101010");
-    test_model.print();
-
-    const new_model = new file_model(); 
-
-    new_model.load_by_id(1);
-    new_model.print();
-            
-}
-
-sanity_test();
-
-//const test_model = new file_model();
-//test_model.print();
-//console.log(test_model);
+file_model.sanity();
