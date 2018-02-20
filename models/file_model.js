@@ -9,6 +9,7 @@ const file_model = {
    // key: null,
 
     update: function(name, data) {
+        this.id = this.id;
         this.name = name;
         this.data = data;
 
@@ -51,13 +52,20 @@ const file_model = {
     },
 
     print: function() {
-        console.log("id: " + this.id, this.name, this.data)
+        //console.log("id: " + this.id, this.name, this.data)
+        let output = "";
+        for (var property in this) {
+            if (this.hasOwnProperty(property)) {
+                output+=property+": "+this[property]+", ";
+            }
+        }
+        console.log(output);
     },
 
     ensure_not_null: function() {
         for (var property in this) {
             if (this.hasOwnProperty(property)) {
-                if (property == null) {
+                if (this[property] == null) {
                     return (false);
                 }
             }
@@ -84,9 +92,11 @@ const sanity_test = function() {
 
     test_model.update("cats", "0101010101010");
     test_model.print();
+    test_model.print();
 
     const new_model = Object.create(file_model);
     new_model.load_by_id(1);
+    new_model.print();
     new_model.print();
             
 }
