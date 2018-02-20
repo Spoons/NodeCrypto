@@ -5,9 +5,11 @@ const file_model = {
     id: null,
     name: null,
     data: null,
+   // owner: null,
+   // key: null,
 
-    update: function(id, name, data) {
-        this.id = id;
+    update: function(name, data) {
+        this.id = null;
         this.name = name;
         this.data = data;
 
@@ -34,6 +36,11 @@ const file_model = {
         data = this.data;
         var query = `INSERT OR REPLACE INTO files (id, name, data) VALUES ('${id}', '${name}', '${data}')`;
         db.prepare(query).run();
+        query = "select last_insert_rowid();"
+        let row = db.prepare(query).get();
+        //this line is probably not right
+        this.id = row.id;
+
     },
 
     print: function() {
@@ -56,7 +63,7 @@ const file_model = {
     //Below here is testing code
     create_migration_table: function() {
         db.prepare("DROP TABLE files").run();
-        db.prepare("CREATE TABLE files (id INTEGER PRIMARY KEY, name TEXT, data BLOB)").run();
+        db.prepare("CREATE TABLE files (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, data BLOB)").run();
         db.prepare("CREATE UNIQUE INDEX files_idx ON files(id)".run();
         console.log("table create");
     }
