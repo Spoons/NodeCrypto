@@ -4,7 +4,9 @@ var db = new Database('db.db');
 const model_generic = {
 
     is_child_property: function(property) {
-        return (this.hasOwnProperty(property) && typeof (this[property]) !== "function");
+        return (this.hasOwnProperty(property) 
+                && typeof (this[property]) !== "function"
+                && property !== "testing");
     },
 
     load_by_id: function(id) {
