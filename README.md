@@ -1,5 +1,5 @@
-# NodeCrytpo
-NodeCrypto is an opensource encrypted file sharing platform written in Node and Express.
+# NodeCrypto
+NodeCrypto is an opensource file sharing platform written in Node and Express designed to ensure privacy. All files are encrypted with public keys. 
 
 
 # License
