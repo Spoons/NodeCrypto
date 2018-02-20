@@ -8,12 +8,17 @@ const file_model = {
    // owner: null,
    // key: null,
 
-    update: function(id, name, data) {
-        this.id = id;
+    update: function(name, data) {
         this.name = name;
         this.data = data;
 
         this.write();
+    },
+
+    
+    update_with_id: function(id, name, data) {
+        this.id = id;
+        update(name, data);
     },
 
     load_by_id: function(id) {
@@ -34,8 +39,14 @@ const file_model = {
         id = this.id;
         name = this.name;
         data = this.data;
-        var query = `INSERT OR REPLACE INTO files (id, name, data) VALUES ('${id}', '${name}', '${data}')`;
-        db.prepare(query).run();
+        if (id != null) {
+            var query = `INSERT OR REPLACE INTO files (id, name, data) VALUES ('${id}', '${name}', '${data}')`;
+            db.prepare(query).run();
+        } else {
+            var query = `INSERT OR REPLACE INTO files (name, data) VALUES ('${name}', '${data}')`;
+            let row = db.prepare(query).run();
+            this.id = row.lastInsertROWID;
+        }
 
     },
 
@@ -71,7 +82,7 @@ const sanity_test = function() {
     const test_model = Object.create(file_model);
     test_model.create_migration_table();
 
-    test_model.update(1, "cats", "0101010101010");
+    test_model.update("cats", "0101010101010");
     test_model.print();
 
     const new_model = Object.create(file_model);
