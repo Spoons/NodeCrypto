@@ -6,10 +6,12 @@ const file_model = {
     name: null,
     data: null,
 
-    set: function(id, name, data) {
+    update: function(id, name, data) {
         this.id = id;
         this.name = name;
         this.data = data;
+
+        this.write();
     },
 
     load_by_id: function(id) {
@@ -22,23 +24,40 @@ const file_model = {
 
     },
 
-    write_new_file: function() { 
+    write: function() { 
+        if (this.ensure_not_null == false) {
+            console.log("Writing null file model!!");
+        }
+
         id = this.id;
         name = this.name;
         data = this.data;
-        var query = `INSERT INTO files (id, name, data) VALUES ('${id}', '${name}', '${data}')`;
+        var query = `INSERT OR REPLACE INTO files (id, name, data) VALUES ('${id}', '${name}', '${data}')`;
         db.prepare(query).run();
     },
 
     print: function() {
         console.log("id: " + this.id, this.name, this.data)
     },
+
+    ensure_not_null: function() {
+        for (var property in this) {
+            if (this.hasOwnProperty(property) {
+                if (property == null) {
+                    return (false);
+                }
+            }
+        }
+        return (true);
+
+    }
         
 
     //Below here is testing code
-    create_test_table: function() {
+    create_migration_table: function() {
         db.prepare("DROP TABLE files").run();
-        db.prepare("CREATE TABLE files (id INTEGER, name TEXT, data BLOB)").run();
+        db.prepare("CREATE TABLE files (id INTEGER PRIMARY KEY, name TEXT, data BLOB)").run();
+        db.prepare("CREATE UNIQUE INDEX files_idx ON files(id)".run();
         console.log("table create");
     }
 }
