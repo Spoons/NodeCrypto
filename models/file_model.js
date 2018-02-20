@@ -38,13 +38,21 @@ file_model.sanity = function() {
             test_model.testing.create_migration_table();
 
             test_model.update("cats", "0101010101010");
+            let t1 = test_model.to_string();
             test_model.print();
 
             const new_model = new file_model(); 
 
             new_model.load_by_id(1);
+            let t2 = new_model.to_string();
             new_model.print();
-                
+
+            if (t1 === t2) {
+                console.log("file-model: sanity check pass!");
+                return(true);
+            } else {
+                return(false);
+            }
         }
 
 file_model.sanity();
