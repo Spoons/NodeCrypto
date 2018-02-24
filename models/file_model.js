@@ -5,6 +5,11 @@ let file_model = function() {
     this.id = null;
     this.name = null;
     this.data = null;
+    this.user = null;
+    this.key = null;
+
+    this.foreign_keys = ["user", "key"];
+
     Object.defineProperty(this, "_TABLE_REF", {
         enumerable: false,
         value: "files"
@@ -28,7 +33,7 @@ let file_model = function() {
     this.testing = {
         create_migration_table: function() {
             db.prepare("DROP TABLE IF EXISTS files").run();
-            db.prepare("CREATE TABLE files (id INTEGER PRIMARY KEY, name TEXT, data BLOB)").run();
+            db.prepare("CREATE TABLE files (id INTEGER PRIMARY KEY, name TEXT, data BLOB, owner INTEGER, key INTEGER)").run();
             db.prepare("CREATE UNIQUE INDEX files_idx ON files(id)").run();
             console.log("table create");
         },

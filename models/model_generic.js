@@ -1,12 +1,35 @@
-var Database = require('better-sqlite3');
-var db = new Database('db.db');
+let Database = require('better-sqlite3');
+let db = new Database('db.db');
+
 
 const model_generic = {
 
+    ignored_values_global: ["foreign_keys", "testing", "schema", "ignored_values"],
+    ignored_values: [],
+
+    foreign_keys: [],
+    
+
+
+
+    is_property_foreign_key: function(property) {
+        if (this.foreign_keys.contains(property)) {
+            return(true);
+        } else {
+            return(false);
+        }
+    },
+
+    ignore_value: function(property) {
+        return(
+                typeof (this[property]) !== "function" 
+            && !this.ignored_values_global.includes(property)
+            && !this.ignored_values.includes(property))
+    },
+
     is_child_property: function(property) {
         return (this.hasOwnProperty(property) 
-                && typeof (this[property]) !== "function"
-                && property !== "testing");
+                && this.ignore_value(property) );
     },
 
     load_by_id: function(id) {
@@ -19,6 +42,8 @@ const model_generic = {
                 this[property] = row[property];
             }
         }
+
+
     },
 
     write: function() { 
@@ -50,7 +75,31 @@ const model_generic = {
         if(this.id == null) {
             this.id = results.lastInsertROWID;
         }
+    },
 
+
+    get_property: function(property) {
+
+        let user_model = require('./user_model');
+        let file_model = require('./file_model');
+        let key_model = require('./key_model');
+
+        string_to_model_class: Object.freeze({"user": user_model, "key": key_model, "file":
+                file_model});
+
+        //if not a foreign key return the property
+        if (!this.is_property_foreign_key(property)) {
+            if (this[property]) {
+                return this[property]
+            } else {
+                console.log(`Error: No ${property} in object ${this[id]}`);
+            }
+        //it is a foreign key generate appropriate model and return
+        } else {
+            let return_object = new string_to_model[property]();
+            return_object.load_by_id(this[property]);
+            return(return_object);
+        }
     },
     
     get_table_ref: function(){
