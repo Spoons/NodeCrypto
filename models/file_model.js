@@ -14,8 +14,6 @@ let file_model = function() {
         this.id = this.id;
         this.name = name;
         this.data = data;
-
-        //this.write.call(this);
         this.write();
     }
     
@@ -60,3 +58,5 @@ file_model.sanity = function() {
         }
 
 file_model.sanity();
+
+module.exports = file_model;
