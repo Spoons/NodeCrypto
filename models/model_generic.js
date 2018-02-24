@@ -84,7 +84,7 @@ const model_generic = {
         let file_model = require('./file_model');
         let key_model = require('./key_model');
 
-        string_to_model_class: Object.freeze({"user": user_model, "key": key_model, "file":
+        string_to_model: Object.freeze({"user": user_model, "key": key_model, "file":
                 file_model});
 
         //if not a foreign key return the property
