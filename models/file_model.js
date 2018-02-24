@@ -5,6 +5,10 @@ let file_model = function() {
     this.id = null;
     this.name = null;
     this.data = null;
+    Object.defineProperty(this, "_TABLE_REF", {
+        enumerable: false,
+        value: "files"
+    })
 
     this.update = function(name, data) {
         this.id = this.id;

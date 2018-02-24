@@ -10,7 +10,7 @@ const model_generic = {
     },
 
     load_by_id: function(id) {
-        let q = `SELECT * FROM files WHERE id=${id}`;
+        let q = `SELECT * FROM ${this.get_table_ref()} WHERE id=${id}`;
         let row = db.prepare(q).get();
 
         //console.log(row);
@@ -23,7 +23,7 @@ const model_generic = {
 
     write: function() { 
         if (this.ensure_not_null == false) {
-            console.log("Writing null file model!!");
+            console.log("Writing null " + this.get_table_ref() + " model!!");
         }
         let columns = "(";
         let values = "(";
@@ -43,14 +43,18 @@ const model_generic = {
         values = values.substring(0,values.length-2);
         values+=")";
 
-        let query = 'INSERT OR REPLACE INTO files' + columns + " VALUES " + values + ";";
-        //console.log(query);
+        let query = 'INSERT OR REPLACE INTO '+ this.get_table_ref() + columns + " VALUES " + values + ";";
+        console.log(query);
         let results = db.prepare(query).run();
 
         if(this.id == null) {
             this.id = results.lastInsertROWID;
         }
 
+    },
+    
+    get_table_ref: function(){
+        return this._TABLE_REF;
     },
 
     to_string: function() {
