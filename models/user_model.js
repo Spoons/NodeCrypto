@@ -5,10 +5,15 @@ let user_model = function() {
     this.id = null;
     this.name = null;
     this.password = null;
-    Object.defineProperty(this, "_TABLE_REF", {
-        enumerable: false,
-        value: "users"
-    });
+
+
+    this.ignored_values = ["_TABLE_REF"];
+    this._TABLE_REF = "users";
+
+    //schema is ignored by database exporter
+    this.schema = {
+        
+    }
 
     this.update = function(name, password) {
         this.id = this.id;
