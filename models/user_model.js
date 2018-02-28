@@ -12,7 +12,7 @@ let user_model = function() {
 
     //schema is ignored by database exporter
     this.schema = {
-        
+
     }
 
     this.update = function(name, password) {
@@ -21,7 +21,7 @@ let user_model = function() {
         this.password = password;
         this.write();
     }
-    
+
     // Used to update user PW
     this.update_with_id = function(id, name, password) {
         this.id = id;
@@ -40,27 +40,27 @@ let user_model = function() {
 
 }
 
-user_model.prototype = generic_model; 
+user_model.prototype = generic_model;
 user_model.sanity = function() {
-            const test_model = new user_model();
-            test_model.testing.create_migration_table();
+    const test_model = new user_model();
+    test_model.testing.create_migration_table();
 
-            test_model.update("Tj", "ilikegizmo");
-            let t1 = test_model.to_string();
-            test_model.print();
+    test_model.update("Tj", "ilikegizmo");
+    let t1 = test_model.to_string();
+    test_model.print();
 
-            const new_model = new user_model(); 
+    const new_model = new user_model();
 
-            new_model.load_by_id(1);
-            let t2 = new_model.to_string();
-            new_model.print();
+    new_model.load_by_id(1);
+    let t2 = new_model.to_string();
+    new_model.print();
 
-            if (t1 === t2) {
-                console.log("user-model: sanity check pass!");
-                return(true);
-            } else {
-                return(false);
-            }
-        }
+    if (t1 === t2) {
+        console.log("user-model: sanity check pass!");
+        return (true);
+    } else {
+        return (false);
+    }
+}
 
 user_model.sanity();
