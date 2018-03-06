@@ -24,7 +24,7 @@ let file_model = function() {
     
     this.update_with_id = function(id, name, data) {
         this.id = id;
-        update(name, data);
+        this.update(name, data);
     }
 
     //Anything in the testing sub-object is ignored when writing to db

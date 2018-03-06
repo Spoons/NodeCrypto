@@ -73,7 +73,7 @@ const model_generic = {
         let results = db.prepare(query).run();
 
         if(this.id == null) {
-            this.id = results.lastInsertROWID;
+            this.id = results.lastInsertROWID+1;
         }
     },
 

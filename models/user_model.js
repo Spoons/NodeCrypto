@@ -5,15 +5,11 @@ let user_model = function() {
     this.id = null;
     this.name = null;
     this.password = null;
-
-
-    this.ignored_values = ["_TABLE_REF"];
-    this._TABLE_REF = "users";
-
-    //schema is ignored by database exporter
-    this.schema = {
-        
-    }
+    
+    Object.defineProperty(this, "_TABLE_REF", {
+        enumerable: false,
+        value: "users"
+    })
 
     this.update = function(name, password) {
         this.id = this.id;
@@ -25,7 +21,7 @@ let user_model = function() {
     // Used to update user PW
     this.update_with_id = function(id, name, password) {
         this.id = id;
-        update(name, password);
+        this.update(name, password);
     }
 
     //Anything in the testing sub-object is ignored when writing to db
@@ -64,3 +60,5 @@ user_model.sanity = function() {
         }
 
 user_model.sanity();
+
+module.exports = user_model;
