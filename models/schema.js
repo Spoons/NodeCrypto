@@ -16,7 +16,7 @@ const schema = {
     },
 
     drop_table: function() {
-        db.prepare("DROP TABLE IF EXISTS files").run();
+        db.prepare(`DROP TABLE IF EXISTS ${this.get_table_name()}`).run();
     },
 
     write: function() {
