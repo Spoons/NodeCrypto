@@ -1,4 +1,6 @@
-const FileModel = require('../models/file_model');
+const file_model = require('../models/file_model'),
+      multer = require('multer'),
+      upload = multer();
 
 exports.file_route_get = (req,res) => {
     res.render('files/index');
@@ -22,9 +24,16 @@ exports.file_transfer_get = (req,res) => {
     }
 }
 
-let file_controller = {
-  create_file: function(file_name, file_data, owner){
-    //TODO: create file functionality
+exports.file_controller = {
+  upload_file: (req, res) => {
+        const uploaded_file = {
+            file_name: req.files.uploadedFile.name,
+            file_data: req.files.uploadedFile.data
+        }
+        console.log(uploaded_file);
+        let newFileModel = new file_model();
+        newFileModel.set(1, uploaded_file.file_name, uploaded_file.file_data.toString('hex'), null, null);
+        res.redirect('/files/');
   },
 
   get_file_properties: function(file_id){
