@@ -84,6 +84,6 @@ file_model.sanity = function() {
     }
 }
 
-file_model.sanity();
+//file_model.sanity();
 
 module.exports = file_model;

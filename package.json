@@ -4,7 +4,7 @@
   "description": "Group project for ITCS 4155 at UNCC",
   "main": "app.js",
   "scripts": {
-    "start": "gulp default && npm app.js",
+    "start": "gulp default & node app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

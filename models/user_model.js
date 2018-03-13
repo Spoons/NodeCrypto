@@ -84,4 +84,4 @@ user_model.sanity = function() {
     }
 }
 
-user_model.sanity();
+//user_model.sanity();

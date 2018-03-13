@@ -11,7 +11,9 @@ const express = require('express'),
       rootPath = require('./routes/root'),
       filesPath = require('./routes/files/files'),
       fileUpload = require('express-fileupload'),
-      usersPath = require('./routes/users/user');
+      usersPath = require('./routes/users/user'),
+      passport = require('passport'),
+      LocalStrategy = require('pasport-local').Strategy;
 
 // App setup
 const app = express();
@@ -20,6 +22,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(__dirname + '/public'));
 app.use(fileUpload());
 app.set('view engine','ejs');
+
 
 // App routing
 app.use('/', rootPath);
