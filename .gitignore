@@ -3,3 +3,5 @@ package-lock.json
 *.swo
 *.db
 node_modules/
+dist/
+npm-debug.log
