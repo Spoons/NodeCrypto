@@ -3,5 +3,21 @@
     <%- include _head.ejs %>
     <body>
         <header>
-
+            <% if (success_message != ""){ %>
+                <div class="alert alert-success">
+                    <%= success_message %>
+                </div>
+            <% } %>
+            
+            <% if (error_message != ""){ %>
+                <div class="alert alert-warning">
+                    <%= error_message %>
+                </div>
+            <% } %>
+            
+            <% if (error != ""){ %>
+                <div class="alert alert-danger">
+                    <%= error %>
+                </div>
+            <% } %>
         </header>

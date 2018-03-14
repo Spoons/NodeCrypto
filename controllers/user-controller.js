@@ -47,6 +47,7 @@ module.exports.user_controller = {
                         user_instance.set(1, user_register_info.user_name, hash,  {});
                         console.log("New user added to DB:");
                         user_instance.print();
+                        req.flash('success_message', "Successfully registered.");
                         res.redirect('/');
                     }
                 });
