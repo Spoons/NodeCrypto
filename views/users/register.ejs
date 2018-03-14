@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Test Page</title>
-    </head>
-    <body>
-        <header>
-
-        </header>
+<%- include ../partials/header.ejs %>
 
         <main>
           <% if (typeof errors == 'object' && errors) { %>
@@ -45,8 +36,4 @@
 	          </div>
         </main>
 
-        <footer>
-
-        </footer>
-    </body>
-</html>
+<%- include ../partials/_footer.ejs %>
