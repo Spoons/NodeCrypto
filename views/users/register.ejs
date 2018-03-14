@@ -10,6 +10,11 @@
         </header>
 
         <main>
+          <% if (typeof errors == 'object' && errors) { %>
+              <% for (let i = 0; i < errors.length; i++){ %>
+                  <p>Error: <%= errors[i].msg %></p>
+              <% } %>
+          <% } %>
           <h1>User Registration Page</h1>
 
           <div id="signup">
@@ -24,7 +29,7 @@
       					<input id="lastname" name="lastname" required="required" type="text" placeholder="Last Name"/>
       				</p>
       				<p>
-      					<label for="username">Email Address</label>
+      					<label for="username">Username</label>
       					<input id="username" name="username" required="required" type="text" placeholder="Username"/>
       				</p>
       				<p>
