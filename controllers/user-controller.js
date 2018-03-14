@@ -35,7 +35,22 @@ module.exports.user_controller = {
                   password_confirmation: req.body.password_conf
             }
             console.log("Received user:\n\t" + user_register_info.first_name);
-            res.redirect('/');
+            
+            // Generate hashed PW
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(user_register_info.password, salt, (err, hash) => {
+                    if (err){
+                        console.log(err);
+                    }else{
+                        // Add user to DB
+                        const user_instance = new user_model();
+                        user_instance.set(1, user_register_info.user_name, hash,  {});
+                        console.log("New user added to DB:");
+                        user_instance.print();
+                        res.redirect('/');
+                    }
+                });
+            });
         }
     },
     get_register: (req,res) => {
@@ -45,3 +60,12 @@ module.exports.user_controller = {
         
     }
 }
+
+
+
+/*
+    //TODO: 
+        - Create user with blank object ({}) for files parameter?
+        - Set user ID based on next available DB ID?
+        - Add firstname/lastname to DB?
+*/
