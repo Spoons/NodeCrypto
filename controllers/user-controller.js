@@ -6,8 +6,8 @@ const passport = require('passport'),
 passport.use(new LocalStrategy(
     function(username, password, done){
         const user_login = new user_model();
-        user_login.schema.load(username, 'username', 'String');
-        
+        user_login = user_controller.load_by_username(username);
+
         // Check if user was found, will be null for username if not.
         if (!user_login.schema.username.value){
             return done(null, false, {message: 'Unable to find account associated.'});
@@ -62,9 +62,9 @@ module.exports.user_controller = {
         req.checkBody('username', 'Username required.').notEmpty();
         req.checkBody('password', 'Password required.').notEmpty();
         req.checkBody('password_conf', 'Passwords must match.').equals(req.body.password);
-        
+
         const errors = req.validationErrors();
-        
+
         if (errors){
             // Rerender page, pass errors
             console.log(errors);
@@ -80,7 +80,7 @@ module.exports.user_controller = {
                   password_confirmation: req.body.password_conf
             }
             console.log("Received user:\n\t" + user_register_info.first_name);
-            
+
             // Generate hashed PW
             bcrypt.genSalt(10, (err, salt) => {
                 bcrypt.hash(user_register_info.password, salt, (err, hash) => {
@@ -103,12 +103,16 @@ module.exports.user_controller = {
         res.render('users/register');
     },
     user_get: (req,res) => {
-        
+
+    },
+    load_by_username: function(username) {
+        let user = load(username, 'username');
+        return user.schema;
     }
 }
 
 /*
-    //TODO: 
+    //TODO:
         - Create user with blank object ({}) for files parameter?
         - Set user ID based on next available DB ID?
         - Add firstname/lastname to DB?
