@@ -5,17 +5,17 @@ const passport = require('passport'),
 
 passport.use(new LocalStrategy(
     function(username, password, done){
-        const user_login = new user_model();
+        let user_login = new user_model();
         user_login = user_controller.load_by_username(username);
 
         // Check if user was found, will be null for username if not.
-        if (!user_login.schema.username.value){
+        if (!user_login.username.value){
             return done(null, false, {message: 'Unable to find account associated.'});
         }else{
             // User found, compare passwords
             // Put in user model?
             console.log("INFO RECEIVED:\n\tUsername:\t"+username+"\n\tPassword:\t"+password);
-            let password_match = bcrypt.compare(password, user_login.schema.password.value, function(err, isMatch){
+            let password_match = bcrypt.compare(password, user_login.password.value, function(err, isMatch){
                 if (err){
                     console.log("Error encountered: " + err);
                 }else{
@@ -31,7 +31,7 @@ passport.use(new LocalStrategy(
 ));
 
 passport.serializeUser((user, done) => {
-    done(null, user.schema.id.value);
+    done(null, user.id.value);
 });
 
 passport.deserializeUser((id, done) => {
@@ -41,7 +41,7 @@ passport.deserializeUser((id, done) => {
     done(err, new_user_model);
 });
 
-module.exports.user_controller = {
+let user_controller = {
     login: (req,res) => {
         console.log(req.body);
         res.redirect('/');
@@ -88,10 +88,8 @@ module.exports.user_controller = {
                         console.log(err);
                     }else{
                         // Add user to DB
-                        const user_instance = new user_model();
-                        user_instance.set(1, user_register_info.user_name, hash,  {});
+                        this.user_controller.create_user(user_register_info.user_name, hash);
                         console.log("New user added to DB:");
-                        user_instance.print();
                         req.flash('success_message', "Successfully registered.");
                         res.redirect('/');
                     }
@@ -106,10 +104,25 @@ module.exports.user_controller = {
 
     },
     load_by_username: function(username) {
-        let user = load(username, 'username');
+        let load_user = new user_model();
+        let user = load_user.schema.load(username, 'username');
+        return load_user.schema;
+    },
+    load_by_id: function(id) {
+        let load_user = new user_model();
+        let user = load_user.schema.load(id);
         return user.schema;
+    },
+    delete_by_id: function(id) {
+        return;
+    },
+    create_user: function(username, hash, files = {}) {
+      let create_user_instance = new user_model();
+      create_user_instance.set(null, username, hash, {});
     }
 }
+
+module.exports.user_controller = user_controller;
 
 /*
     //TODO:
