@@ -85,3 +85,5 @@ user_model.sanity = function() {
 }
 
 user_model.sanity();
+
+module.exports = user_model;
