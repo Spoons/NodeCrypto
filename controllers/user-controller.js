@@ -43,20 +43,12 @@ let user_controller = {
             }
             console.log("Received user:\n\t" + user_register_info.first_name);
 
-            // Generate hashed PW
-            bcrypt.genSalt(10, (err, salt) => {
-                bcrypt.hash(user_register_info.password, salt, (err, hash) => {
-                    if (err){
-                        console.log(err);
-                    }else{
-                        // Add user to DB
-                        this.user_controller.create_user(user_register_info.user_name, hash);
-                        console.log("New user added to DB:");
-                        req.flash('success_message', "Successfully registered.");
-                        res.redirect('/');
-                    }
-                });
-            });
+            // Add user to DB
+            let hash = user_controller.hash_password(user_register_info.password);
+            this.user_controller.create_user(user_register_info.user_name, hash);
+            console.log("New user added to DB:");
+            req.flash('success_message', "Successfully registered.");
+            res.redirect('/');
         }
     },
     get_register: (req,res) => {
@@ -82,13 +74,28 @@ let user_controller = {
       let create_user_instance = new user_model();
       create_user_instance.set(null, username, hash, {});
     },
+
     password_compare: function(password, comparePassword, callback){
         let password_match = bcrypt.compare(password, comparePassword, function(err, isMatch){
             callback(err, isMatch);
         });
+    },
+
+    hash_password: function(pass) {
+        let hash = bcrypt.hashSync(pass, 10);
+        return hash;
+    },
+
+    // --- TESTING CODING ----
+    create_test_user: function() {
+        console.log("Adding test user");
+        user_controller.create_user("rick", user_controller.hash_password("morty"));
+
+          // Generate hashed PW
     }
 }
 
+user_controller.create_test_user();
 module.exports.user_controller = user_controller;
 
 /*

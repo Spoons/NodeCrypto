@@ -62,11 +62,11 @@ let user_model = function() {
     }
 }
 user_model.sanity = function() {
-    const test_model = new user_model();
+    let test_model = new user_model();
     test_model.schema.drop_table();
     test_model.schema.create_table();
 
-    test_model.set("1", "rick", "crisis", "1");
+    test_model.set("1", "rick2", "crisis", "1");
     let t1 = test_model.to_string();
     test_model.print();
 
@@ -84,6 +84,6 @@ user_model.sanity = function() {
     }
 }
 
-user_model.sanity();
 
 module.exports = user_model;
+user_model.sanity();
