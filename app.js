@@ -11,8 +11,7 @@ const express = require('express'),
       cookieParser = require('cookie-parser'),
       expressSession = require('express-session'),
       expressValidator = require('express-validator'),
-      passport = require('passport'),
-      LocalStrategy = require('passport-local').Strategy,
+      auth_config = require('./config/passport'),
       flash = require('connect-flash'),
       secret = require('./secret'),
       rootPath = require('./routes/root'),
@@ -47,8 +46,7 @@ app.use(expressValidator({
 }));
 
 // Passport setup
-app.use(passport.initialize());
-app.use(passport.session());
+auth_config(app);
 
 // Set up flash messages 
 app.use(flash());
