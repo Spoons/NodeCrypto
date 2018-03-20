@@ -1,5 +1,17 @@
 let db = require("./model_generic").db;
 const schema = {
+    return_properties_array: function() {
+        let properties = this.get_schema_properties();
+
+        let data_object = {};
+        properties.forEach(function(prop) {
+            data_object[prop.column_name] = prop.value;
+        });
+
+        console.log(data_object);
+        
+        return(data_object);
+    },
     create_table: function() {
         let properties = this.get_schema_properties();
 

@@ -37,7 +37,11 @@ let file_controller = {
   },
 
   get_file_properties: function(file_id){
-    //TODO: get file data with ID [JSON]
+      let fm = new file_model();
+      fm.load_by_id(file_id);
+      let fmp = fm.get_file_properties();
+      console.log(fmp);
+      return(fmp);
   },
 
   get_file_binary: function(file_id){
