@@ -4,7 +4,7 @@
   "description": "Group project for ITCS 4155 at UNCC",
   "main": "app.js",
   "scripts": {
-    "start": "gulp default & node app.js",
+    "start": "gulp default & nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -38,6 +38,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-sass": "^3.1.0",
     "gulp-uglifyjs": "^0.6.2",
-    "gulp-watch": "^5.0.0"
+    "gulp-watch": "^5.0.0",
+    "nodemon": "^1.17.2"
   }
 }

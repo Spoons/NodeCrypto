@@ -1,0 +1,17 @@
+@import 'variables';
+
+header{
+    nav.navbar-inverse{
+        border-radius: 0;
+        
+        @media (min-width: $phone-width){
+            padding: 0 1em;
+        }
+    }
+    
+    .signed-in-as{
+        @media (max-width: $phone-width){
+            padding-left: 15px;
+        }
+    }
+}
