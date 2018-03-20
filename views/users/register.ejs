@@ -1,0 +1,39 @@
+<%- include ../partials/_header.ejs %>
+
+        <main>
+          <% if (typeof errors == 'object' && errors) { %>
+              <% for (let i = 0; i < errors.length; i++){ %>
+                  <p>Error: <%= errors[i].msg %></p>
+              <% } %>
+          <% } %>
+          <h1>User Registration Page</h1>
+
+          <div id="signup">
+      			<form  action="register" method="post">
+      				<h1>Sign Up</h1>
+      				<p>
+      					<label for="firstname">First Name</label>
+      					<input id="firstname" name="firstname" required="required" type="text" placeholder="First Name"/>
+      				</p>
+      				<p>
+      					<label for="lastname">Last Name</label>
+      					<input id="lastname" name="lastname" required="required" type="text" placeholder="Last Name"/>
+      				</p>
+      				<p>
+      					<label for="username">Username</label>
+      					<input id="username" name="username" required="required" type="text" placeholder="Username"/>
+      				</p>
+      				<p>
+      					<label for="password">Your password</label>
+      					<input id="password" name="password" required="required" type="password" placeholder="Password"/>
+      				</p>
+      				<p>
+      					<label for="password_conf">Password Confirmation</label>
+      					<input id="password_conf" name="password_conf" required="required" type="password" placeholder="Please confirm your password"/>
+      				</p>
+    					<input type="submit" value="Sign Up" />
+      			</form>
+	          </div>
+        </main>
+
+<%- include ../partials/_footer.ejs %>

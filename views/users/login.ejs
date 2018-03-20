@@ -1,0 +1,22 @@
+<%- include ../partials/_header.ejs %>
+
+        <main>
+          <h1>User Login Page</h1>
+
+          <div id="login">
+      			<form  action="login" method="post">
+      				<h1>Log In</h1>
+      				<p>
+      					<label for="username">Username</label>
+      					<input id="username" name="username" required="required" type="text" placeholder="Username"/>
+      				</p>
+      				<p>
+      					<label for="password">Your password</label>
+      					<input id="password" name="password" required="required" type="password" placeholder="Password"/>
+      				</p>
+    					<input type="submit" value="Login" />
+      			</form>
+	          </div>
+        </main>
+
+<%- include ../partials/_footer.ejs %>
