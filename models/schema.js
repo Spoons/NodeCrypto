@@ -22,10 +22,15 @@ const schema = {
     write: function() {
         let properties = this.get_schema_properties();
 
+
         //console.log("writing object to db");
         let query = "INSERT OR REPLACE INTO " + this.properties.table_name + "(";
         let values = "";
         properties.forEach(function(p) {
+            //do not write id to db if no id exists
+            if (p.column_name == 'id' && p.value == null) {
+                return;
+            }
             query+=p.column_name + ", ";
             values+="\'"+p.value + "\', ";
         });
@@ -36,15 +41,25 @@ const schema = {
         db.prepare(query).run();
     },
 
-    load: function(id) {
-        let q = `SELECT * FROM ${this.properties.table_name} WHERE id=${id};`;
+    // Optional search term allows querying via other columns, such as username. Also allows for string value searching.
+    load: function(id, optional_search_term = 'id', optional_search_term_type = 'int') {
+        let q = '';
+
+        q = `SELECT * FROM ${this.properties.table_name} WHERE ${optional_search_term}='${id}';`;
+
         let v = db.prepare(q).get();
         let properties = this.get_schema_properties();
-
         let object = this;
-        properties.forEach(function(p) {
-            object[p.column_name].value = v[p.column_name];
-        });
+        if (v){
+            properties.forEach(function(p) {
+                object[p.column_name].value = v[p.column_name];
+            });
+        }else{
+            properties.forEach(function(p) {
+                object[p.column_name].value = null;
+            });
+        }
+
     },
 
     get_schema_properties: function() {
