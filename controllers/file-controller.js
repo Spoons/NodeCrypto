@@ -2,29 +2,7 @@ const file_model = require('../models/file_model'),
       multer = require('multer'),
       upload = multer();
 
-exports.file_route_get = (req,res) => {
-    res.render('files/index');
-}
-
-exports.file_id_get = (req,res) => {
-    const fileId = req.params.id;
-    if (fileId){
-        res.render('files/file', {fileId: fileId});
-    }else{
-        res.render('files/file');
-    }
-}
-
-exports.file_transfer_get = (req,res) => {
-    const fileId = req.params.id;
-    if (fileId){
-        res.render('files/transfer', {fileId: fileId});
-    }else{
-        res.render('files/transfer');
-    }
-}
-
-exports.file_controller = {
+let file_controller = {
   upload_file: (req, res) => {
         const uploaded_file = {
             file_name: req.files.uploadedFile.name,
@@ -34,6 +12,28 @@ exports.file_controller = {
         let newFileModel = new file_model();
         newFileModel.set(1, uploaded_file.file_name, uploaded_file.file_data.toString('hex'), null, null);
         res.redirect('/files/');
+  },
+
+  file_route_get : (req,res) => {
+      res.render('files/index');
+  },
+
+  file_id_get : (req,res) => {
+      const fileId = req.params.id;
+      if (fileId){
+          res.render('files/file', {fileId: fileId});
+      }else{
+          res.render('files/file');
+      }
+  },
+
+  file_transfer_get : (req,res) => {
+      const fileId = req.params.id;
+      if (fileId){
+          res.render('files/transfer', {fileId: fileId});
+      }else{
+          res.render('files/transfer');
+      }
   },
 
   get_file_properties: function(file_id){
@@ -60,3 +60,6 @@ exports.file_controller = {
 
   }
 }
+
+
+module.exports.file_controller = file_controller;
