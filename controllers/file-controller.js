@@ -41,7 +41,6 @@ let file_controller = {
       fm.load_by_id(file_id);
       let fmp = fm.get_file_properties();
       console.log(fmp);
-      return(fmp);
   },
 
   get_file_binary: function(file_id){

@@ -37,7 +37,7 @@ let user_model = function() {
     //      db_foreign_column: "id",
     //      column_name: "key",
     //      value: null,
-    //  }
+    //  } 
     },
 
     this.schema = Object.assign(this.schema, schema_p);

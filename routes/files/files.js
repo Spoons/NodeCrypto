@@ -1,6 +1,6 @@
 const express = require('express'),
       router = express.Router()
-      fileController = require('../../controllers/file-controller').file_controller,
+      fileController = require('../../controllers/file-controller').file_controller;
       upload_routes = require('./uploads/upload');
 
 router.get('/', fileController.file_route_get);
