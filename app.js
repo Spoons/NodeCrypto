@@ -48,7 +48,7 @@ app.use(expressValidator({
 // Passport setup
 auth_config(app);
 
-// Set up flash messages 
+// Set up flash messages
 app.use(flash());
 
 app.use((req,res,next) => {
