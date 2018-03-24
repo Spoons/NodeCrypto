@@ -17,9 +17,13 @@
                     <div id="navbar_main" class="navbar-collapse collapse in" aria-expanded="true" style="">
                     <ul class="nav navbar-nav">
                      <% if (user){ %>
-                      <li class="active"><a href="#">Home</a></li>
-                      <li><a href="#">Files</a></li>
-                      <li><a href="#">Account</a></li>
+                      <li><a href="/">Home</a></li>
+                      
+                      <!-- //TODO: Replace with /files/<%= user.schema.id %>  -->
+                      <li><a href="/files/">Files</a></li>
+                      
+                      <!-- //TODO: Replace with /users/<%= user.schema.id %> -->
+                      <li><a href="/">Account</a></li>
                      <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">

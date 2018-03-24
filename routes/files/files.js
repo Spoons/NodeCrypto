@@ -11,4 +11,6 @@ router.get('/file/transfer/:id', fileController.file_transfer_get);
 
 router.use('/upload', upload_routes);
 
+// TODO : Get all files by user ID - requires pulling user from local session
+
 module.exports = router;
