@@ -17,12 +17,14 @@ const express = require('express'),
       rootPath = require('./routes/root'),
       filesPath = require('./routes/files/files'),
       fileUpload = require('express-fileupload'),
-      usersPath = require('./routes/users/user');
+      usersPath = require('./routes/users/user'),
+      passport = require('passport'),
+      middleware = require('./middleware/mw');
 
 // App setup
 const app = express();
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(__dirname + '/dist'));
 app.use(fileUpload());
@@ -61,7 +63,7 @@ app.use((req,res,next) => {
 
 // App routing
 app.use('/', rootPath);
-app.use('/files', filesPath)
+app.use('/files', middleware.isAuthenticated, filesPath)
 app.use('/users', usersPath)
 
 // Server setup & Listen
