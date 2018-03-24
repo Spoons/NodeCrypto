@@ -1,22 +1,22 @@
 <%- include ../partials/_header.ejs %>
 
         <main>
-          <h1>User Login Page</h1>
 
           <div id="login">
-      			<form  action="login" method="post">
-      				<h1>Log In</h1>
-      				<p>
-      					<label for="username">Username</label>
-      					<input id="username" name="username" required="required" type="text" placeholder="Username"/>
-      				</p>
-      				<p>
-      					<label for="password">Your password</label>
-      					<input id="password" name="password" required="required" type="password" placeholder="Password"/>
-      				</p>
-    					<input type="submit" value="Login" />
-      			</form>
-	          </div>
+            <form action="login" method="post">
+                <h1>Log In</h1>
+                <div class="input-group">
+                    <span class="input-group-addon" id="username-addon">Username</span>
+                    <input id="username" name="username" required="required" type="text" class="form-control" aria-describedby="username-addon"/>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon" id="password-addon">Password</span>
+                    <input id="password" name="password" required="required" type="password" class="form-control" aria-describedby="password-addon"/>
+                </div>
+                <button type="submit" value="Login" class="btn btn-success">Submit</button>
+            </form>
+          </div>
+          
         </main>
 
 <%- include ../partials/_footer.ejs %>

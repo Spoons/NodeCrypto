@@ -4,6 +4,21 @@ header{
     nav.navbar-inverse{
         border-radius: 0;
         
+        .navbar{
+            &-collapse#navbar_main{
+                li > a{
+                    color: $white;
+                }
+            }
+            &-header{
+                a,
+                span{
+                    color: $white;
+                }
+            }
+            
+        }
+        
         @media (min-width: $phone-width){
             padding: 0 1em;
         }
