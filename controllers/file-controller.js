@@ -19,11 +19,8 @@ let file_controller = {
             file_key: null
         }
 
-        console.log(uploaded_file);
-
         let newFileModel = new file_model();
 
-//        let hexData = uploaded_file.file_data.toString('hex');
         let err = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_ext, uploaded_file.file_data.toString('hex'), uploaded_file.user_id, uploaded_file.file_key);
 
         if (err){
@@ -54,7 +51,7 @@ let file_controller = {
                     file_id: file_model_instance.schema.id.value,
                     uploader_id: file_model_instance.schema.user.value
                 }
-                res.render('files/file', {file_info: schema_data});
+                res.render('files/file_info', {file_info: schema_data});
 
           }else{
               req.flash('error_message', {message: "Something went wrong, please try again."});
@@ -79,7 +76,6 @@ let file_controller = {
       let fm = new file_model();
       fm.load_by_id(file_id);
       let fmp = fm.get_file_properties();
-      console.log(fmp);
   },
 
 
@@ -97,15 +93,13 @@ let file_controller = {
 
   get_files_by_user: function(user_id){
       let f = new file_model();
-      console.log("running get_files_by_user....maybe it'll work??????");
       let results = f.schema.load_multiple(user_id, 'user');
       return results;
   },
 
   get_files_route: function(req, res) {
       let files = fileController.get_files_by_user(req.user.schema.id.value);
-      console.log(files);
-      res.redirect('/');
+      res.render('files/all_files', {files: files});
   },
 
   list_all_files_ADMIN: function(){

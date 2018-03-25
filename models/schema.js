@@ -8,7 +8,7 @@ const schema = {
             data_object[prop.column_name] = prop.value;
         });
 
-        console.log(data_object);
+        
 
         return(data_object);
     },
@@ -25,7 +25,7 @@ const schema = {
         });
         table_create_query = table_create_query.substring(0, table_create_query.length - 2);
         table_create_query += ');';
-        //console.log(table_create_query);
+        
         db.prepare(table_create_query).run();
     },
 
@@ -37,7 +37,7 @@ const schema = {
         let properties = this.get_schema_properties();
 
 
-        //console.log("writing object to db");
+        
         let query = "INSERT OR REPLACE INTO " + this.properties.table_name + "(";
         let values = "";
         properties.forEach(function(p) {
@@ -79,10 +79,9 @@ const schema = {
     load_multiple: function(value, column) {
         let q = `SELECT * FROM ${this.properties.table_name} WHERE ${column}='${value}'`;
         let v = db.prepare(q).get();
-
         if (v === undefined) {
-            console.log("error: no objects returned from query");
-            return(null);
+
+            return(v);
         } else {
             return(v);
         }

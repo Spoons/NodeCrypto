@@ -1,0 +1,34 @@
+<%- include ../partials/_header.ejs %>
+        
+        <main>
+           <ul id="all_files">
+              <% if (files){ %>
+                  <% if (Array.isArray(files)){ %> 
+                      <% files.forEach(function(file){ %>
+                           <li>File: 
+                               <ul>
+                                   <li><%= file.name %></li>
+                                   
+                               </ul>
+                           </li>
+                       <% }) %>
+                  <% }else{ %>
+                      <li>File: 
+                                   <ul>
+                                       <li><%= files.name %></li>
+                                       
+                                   </ul>
+                      </li>
+                  <% } %>
+              <% }else{ %>
+                  <p>No files uploaded by this user</p>
+              <% } %>
+               
+           </ul> 
+           
+           <a href="/files/">
+               <button class="btn btn-primary btn-lg">Upload a file</button>
+           </a>
+        </main>
+        
+ <%- include ../partials/_footer.ejs %>
