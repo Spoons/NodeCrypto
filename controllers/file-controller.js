@@ -1,6 +1,9 @@
 const file_model = require('../models/file_model'),
       multer = require('multer'),
-      upload = multer();
+      upload = multer(),
+      path = require('path'),
+      mime = require('mime'),
+      fs = require('fs');
 
 let file_controller = {
   upload_file: (req, res) => {
@@ -13,6 +16,8 @@ let file_controller = {
         }
         
         let newFileModel = new file_model();
+      
+//        let hexData = uploaded_file.file_data.toString('hex');
         let err = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_data.toString('hex'), uploaded_file.user_id, uploaded_file.file_key);
         
         if (err){
@@ -37,8 +42,9 @@ let file_controller = {
           file_model_instance.schema.load(fileId);
           if (file_model_instance.schema.data){
                 const schema_data = {
-                    name: file_model_instance.schema.name.value,
-                    data: file_model_instance.schema.data.value,
+                    file_name: file_model_instance.schema.name.value,
+                    file_data: file_model_instance.schema.data.value,
+                    file_id: file_model_instance.schema.id.value,
                     uploader_id: file_model_instance.schema.user.value
                 }
                 res.render('files/file', {file_info: schema_data});
@@ -87,6 +93,18 @@ let file_controller = {
 
   list_all_files_ADMIN: function(){
 
+  },
+    
+  file_download: (req,res) => {
+    let file_data = req.body.file_data;
+      console.log("File data length: " + file_data.length);
+    
+    res.setHeader('Content-disposition', 'attachment; filename=' + req.body.file_name);
+    res.setHeader('Content-type', 'image/jpeg');
+
+    var contents = new Buffer(file_data, "hex");
+
+    return res.send(200, contents);
   }
 }
 

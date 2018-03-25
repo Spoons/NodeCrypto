@@ -5,11 +5,17 @@
             <ul id="file_data">
                 <li class="uploader">Uploaded by [ID]: <%= file_info.uploader_id %></li>
                 <ul>
-                    <li class="name">Name: <%= file_info.name %></li>
-                    <li class="data">Data: <%= file_info.data %></li>    
+                    <li class="name">Name: <%= file_info.file_name %></li>
+                    <li class="data">Data Length [Hex]: <%= file_info.file_data.length %></li>    
                 </ul>
                 
             </ul>
+            
+            <form action="/files/file/<%= file_info.file_id %>/download" method="POST">
+                <input type="hidden" name="file_name" value="<%= file_info.file_name %>">
+                <input type="hidden" name="file_data" value="<%= file_info.file_data %>">
+                <button type="submit" class="btn btn-info btn-lg">Download</button>
+            </form>
         </main>
         
  <%- include ../partials/_footer.ejs %>
