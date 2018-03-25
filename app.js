@@ -18,6 +18,7 @@ const express = require('express'),
       filesPath = require('./routes/files/files'),
       fileUpload = require('express-fileupload'),
       usersPath = require('./routes/users/user'),
+      errorPath_NOT_FOUND = require('./routes/error'),
       passport = require('passport'),
       middleware = require('./middleware/mw');
 
@@ -63,8 +64,10 @@ app.use((req,res,next) => {
 
 // App routing
 app.use('/', rootPath);
-app.use('/files', middleware.isAuthenticated, filesPath)
-app.use('/users', usersPath)
+app.use('/files', middleware.isAuthenticated, filesPath);
+app.use('/users', usersPath);
+app.use('*', errorPath_NOT_FOUND);
+
 
 // Server setup & Listen
 const server = http.createServer(app);
