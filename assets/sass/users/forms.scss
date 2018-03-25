@@ -1,0 +1,34 @@
+@import '../variables';
+
+#login,
+#signup{
+    margin: 0 auto;
+    padding: 2em;
+    border: 2px solid black;
+    border-radius: 20px;
+    background-color: lighten($black, 80%);
+    h1{
+        text-align: center;
+        text-decoration: underline;
+    }
+    .btn-primary{
+        font-size: 1.2;
+        background-color: $dark-content;
+    }
+    
+    .input-group{
+        margin: 2em 0;
+        input,
+        &-addon{ 
+            border: 1px solid $dark-content;
+        }
+        &-addon{
+            min-width: 25%;
+            font-weight: bold;
+        }
+    }
+    
+    @media (min-width: $phone-width){
+        width: 50%;
+    }
+}

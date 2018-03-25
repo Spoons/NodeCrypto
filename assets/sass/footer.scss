@@ -1,0 +1,15 @@
+@import 'variables';
+
+#footer{
+    background-color: $dark-content;
+    position: fixed;
+    bottom: 0;
+    width: 100vw;
+    .footer{
+        &-text{
+            font-size: 1.5em;
+            color: $white;
+            text-align: center;
+        }
+    }
+}
