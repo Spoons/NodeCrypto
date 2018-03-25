@@ -52,7 +52,9 @@ const schema = {
         query += values + ")";
         query = query.substring(0, query.length-3);
         query += ");"
-        db.prepare(query).run();
+        let info = db.prepare(query).run();
+
+        this.id.value = info.lastInsertROWID;
     },
 
     // Optional search term allows querying via other columns, such as username. Also allows for string value searching.

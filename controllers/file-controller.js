@@ -11,7 +11,7 @@ let file_controller = {
 
         let file_extension = in_file.name.substr(in_file.name.lastIndexOf('.')+1, in_file.name.length);
         const uploaded_file = {
-            file_id: 1,
+            file_id: null,
             file_name: in_file.name,
             file_ext: file_extension,
             file_data: in_file.data,
@@ -25,13 +25,15 @@ let file_controller = {
 
 //        let hexData = uploaded_file.file_data.toString('hex');
         let err = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_ext, uploaded_file.file_data.toString('hex'), uploaded_file.user_id, uploaded_file.file_key);
+        let new_id = newFileModel.schema.id.value;
+        console.log("new id value: " + new_id);
 
         if (err){
             req.flash('error_message', {message: "Something went horribly, horribly wrong. Please don't do that again."});
             res.redirect('/');
         }else{
             req.flash('success_message', "File uploaded successfully");
-            res.redirect(`/files/file/${uploaded_file.file_id}`);
+            res.redirect(`/files/file/${new_id}`);
         }
 
   },
