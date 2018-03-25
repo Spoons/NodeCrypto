@@ -20,10 +20,24 @@ let file_controller = {
 
   file_id_get : (req,res) => {
       const fileId = req.params.id;
+      const file_model_instance = new file_model();
+      
       if (fileId){
-          res.render('files/file', {fileId: fileId});
+          file_model_instance.schema.load(fileId);
+          if (file_model_instance.schema.data){
+                const schema_data = {
+                    name: file_model_instance.schema.name.value,
+                    data: file_model_instance.schema.data.value
+                }
+                res.render('files/file', {file_info: schema_data});
+                
+          }else{
+              req.flash('error_message', {message: "Something went wrong, please try again."});
+              res.render('/files/');
+          }          
       }else{
-          res.render('files/file');
+          req.flash('error_message', {message: "Unable to obtain file ID"});
+          res.render('/files/');
       }
   },
 

@@ -1,8 +1,11 @@
 <%- include ../partials/_header.ejs %>
         
         <main>
-            <h1>Files file page</h1>
-            <p> TODO: Dispaly information about a single file</p>
+            
+            <ul id="file_data">
+                <li class="name">Name: <%= file_info.name %></li>
+                <li class="data">Data: <%= file_info.data %></li>
+            </ul>
         </main>
         
  <%- include ../partials/_footer.ejs %>

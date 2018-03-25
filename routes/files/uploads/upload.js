@@ -6,6 +6,6 @@ const express = require('express'),
       file_controller = require('../../../controllers/file-controller').file_controller;
 
 // WIP: Uploads file and parses data, sends to model, will eventually send to controller
-router.post('/', upload.single('uploadedFile'), passport.authenticate('local', {successRedirect: '/', failureRedirect: '/users/login', failureFlash: true}), file_controller.upload_file);
+router.post('/', upload.single('uploadedFile'), file_controller.upload_file);
 
 module.exports = router;
