@@ -18,6 +18,11 @@ let file_model = function() {
             column_name: "name",
             value: null,
         },
+        extension: {
+            db_type: "TEXT",
+            column_name: "extension",
+            value: null,
+        },
         data: {
             db_type: "BLOB",
             column_name: "data",
@@ -29,7 +34,6 @@ let file_model = function() {
             db_foreign_column: "id",
             column_name: "user",
             value: null,
-
         },
         key: {
             db_type: "INTEGER",
@@ -42,10 +46,11 @@ let file_model = function() {
 
     this.schema = Object.assign(this.schema, schema_p);
 
-    this.set = function(id, name, data, user, key) {
+    this.set = function(id, name, extension, data, user, key) {
         try{
             this.schema.id.value = id;
             this.schema.name.value = name;
+            this.schema.extension.value = extension;
             this.schema.data.value = data;
             this.schema.user.value = user;
             this.schema.key.value = key;
@@ -71,7 +76,7 @@ file_model.sanity = function() {
     const test_model = new file_model();
     test_model.schema.create_table();
 
-    test_model.set("1", "cats", "01010101010", "1", "1");
+    test_model.set("1", "cats", "txt", "01010101010", "1", "1");
     let t1 = test_model.to_string();
     test_model.print();
 

@@ -6,6 +6,7 @@
                 <li class="uploader">Uploaded by [ID]: <%= file_info.uploader_id %></li>
                 <ul>
                     <li class="name">Name: <%= file_info.file_name %></li>
+                    <li class="name">Extension: <%= file_info.file_ext %></li>
                     <li class="data">Data Length [Hex]: <%= file_info.file_data.length %></li>    
                 </ul>
                 
@@ -14,6 +15,7 @@
             <form action="/files/file/<%= file_info.file_id %>/download" method="POST">
                 <input type="hidden" name="file_name" value="<%= file_info.file_name %>">
                 <input type="hidden" name="file_data" value="<%= file_info.file_data %>">
+                <input type="hidden" name="file_ext" value="<%= file_info.file_ext %>">
                 <button type="submit" class="btn btn-info btn-lg">Download</button>
             </form>
         </main>
