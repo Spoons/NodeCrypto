@@ -3,8 +3,12 @@
         <main>
             
             <ul id="file_data">
-                <li class="name">Name: <%= file_info.name %></li>
-                <li class="data">Data: <%= file_info.data %></li>
+                <li class="uploader">Uploaded by [ID]: <%= file_info.uploader_id %></li>
+                <ul>
+                    <li class="name">Name: <%= file_info.name %></li>
+                    <li class="data">Data: <%= file_info.data %></li>    
+                </ul>
+                
             </ul>
         </main>
         

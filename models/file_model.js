@@ -43,12 +43,16 @@ let file_model = function() {
     this.schema = Object.assign(this.schema, schema_p);
 
     this.set = function(id, name, data, user, key) {
-        this.schema.id.value = id;
-        this.schema.name.value = name;
-        this.schema.data.value = data;
-        this.schema.user.value = user;
-        this.schema.key.value = key;
-        this.schema.write();
+        try{
+            this.schema.id.value = id;
+            this.schema.name.value = name;
+            this.schema.data.value = data;
+            this.schema.user.value = user;
+            this.schema.key.value = key;
+            this.schema.write();
+        }catch(err){
+            return err;
+        }   
     },
     this.to_string = function() {
         let prop = this.schema.get_schema_properties();

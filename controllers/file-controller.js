@@ -5,13 +5,24 @@ const file_model = require('../models/file_model'),
 let file_controller = {
   upload_file: (req, res) => {
         const uploaded_file = {
+            file_id: 1,
             file_name: req.files.uploadedFile.name,
-            file_data: req.files.uploadedFile.data
+            file_data: req.files.uploadedFile.data,
+            user_id: req.user.schema.id.value,
+            file_key: null
         }
-        console.log(uploaded_file);
+        
         let newFileModel = new file_model();
-        newFileModel.set(1, uploaded_file.file_name, uploaded_file.file_data.toString('hex'), null, null);
-        res.redirect('/files/');
+        let err = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_data.toString('hex'), uploaded_file.user_id, uploaded_file.file_key);
+        
+        if (err){
+            req.flash('error_message', {message: "Something went horribly, horribly wrong. Please don't do that again."});    
+            res.redirect('/');
+        }else{
+            req.flash('success_message', "File uploaded successfully");
+            res.redirect(`/files/file/${uploaded_file.file_id}`);    
+        }
+        
   },
 
   file_route_get : (req,res) => {
@@ -27,7 +38,8 @@ let file_controller = {
           if (file_model_instance.schema.data){
                 const schema_data = {
                     name: file_model_instance.schema.name.value,
-                    data: file_model_instance.schema.data.value
+                    data: file_model_instance.schema.data.value,
+                    uploader_id: file_model_instance.schema.user.value
                 }
                 res.render('files/file', {file_info: schema_data});
                 
