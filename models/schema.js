@@ -9,9 +9,11 @@ const schema = {
         });
 
         console.log(data_object);
-        
+
         return(data_object);
     },
+
+
     create_table: function() {
         let properties = this.get_schema_properties();
 
@@ -70,6 +72,19 @@ const schema = {
             properties.forEach(function(p) {
                 object[p.column_name].value = null;
             });
+        }
+
+    },
+
+    load_multiple: function(value, column) {
+        let q = `SELECT * FROM ${this.properties.table_name} WHERE ${column}='${value}'`;
+        let v = db.prepare(q).get();
+
+        if (v === undefined) {
+            console.log("error: no objects returned from query");
+            return(null);
+        } else {
+            return(v);
         }
 
     },

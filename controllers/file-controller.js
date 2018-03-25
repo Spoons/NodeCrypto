@@ -8,7 +8,7 @@ const file_model = require('../models/file_model'),
 let file_controller = {
   upload_file: (req, res) => {
         let in_file = req.files.uploadedFile;
-      
+
         let file_extension = in_file.name.substr(in_file.name.lastIndexOf('.')+1, in_file.name.length);
         const uploaded_file = {
             file_id: 1,
@@ -18,22 +18,22 @@ let file_controller = {
             user_id: req.user.schema.id.value,
             file_key: null
         }
-        
+
         console.log(uploaded_file);
-        
+
         let newFileModel = new file_model();
-      
+
 //        let hexData = uploaded_file.file_data.toString('hex');
         let err = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_ext, uploaded_file.file_data.toString('hex'), uploaded_file.user_id, uploaded_file.file_key);
-        
+
         if (err){
-            req.flash('error_message', {message: "Something went horribly, horribly wrong. Please don't do that again."});    
+            req.flash('error_message', {message: "Something went horribly, horribly wrong. Please don't do that again."});
             res.redirect('/');
         }else{
             req.flash('success_message', "File uploaded successfully");
-            res.redirect(`/files/file/${uploaded_file.file_id}`);    
+            res.redirect(`/files/file/${uploaded_file.file_id}`);
         }
-        
+
   },
 
   file_route_get : (req,res) => {
@@ -43,7 +43,7 @@ let file_controller = {
   file_id_get : (req,res) => {
       const fileId = req.params.id;
       const file_model_instance = new file_model();
-      
+
       if (fileId){
           file_model_instance.schema.load(fileId);
           if (file_model_instance.schema.data){
@@ -55,11 +55,11 @@ let file_controller = {
                     uploader_id: file_model_instance.schema.user.value
                 }
                 res.render('files/file', {file_info: schema_data});
-                
+
           }else{
               req.flash('error_message', {message: "Something went wrong, please try again."});
               res.render('/files/');
-          }          
+          }
       }else{
           req.flash('error_message', {message: "Unable to obtain file ID"});
           res.render('/files/');
@@ -82,6 +82,7 @@ let file_controller = {
       console.log(fmp);
   },
 
+
   get_file_binary: function(file_id){
     //TODO: get file data with ID [DATA]
   },
@@ -94,19 +95,28 @@ let file_controller = {
     //TODO: delete file functionality
   },
 
-  list_files_by_user: function(user_id){
-    //TODO: get all files by given user ID
+  get_files_by_user: function(user_id){
+      let f = new file_model();
+      console.log("running get_files_by_user....maybe it'll work??????");
+      let results = f.schema.load_multiple(user_id, 'user');
+      return results;
+  },
+
+  get_files_route: function(req, res) {
+      let files = fileController.get_files_by_user(req.user.schema.id.value);
+      console.log(files);
+      res.redirect('/');
   },
 
   list_all_files_ADMIN: function(){
 
   },
-    
+
   file_download: (req,res) => {
     let file_data = req.body.file_data;
-    
+
     let mime_type = (file_data.file_ext == "txt" ? "text/plain" : "application/octet-stream");
-      
+
     res.setHeader('Content-disposition', 'attachment; filename=' + req.body.file_name);
     res.setHeader('Content-type', mime_type);
 
