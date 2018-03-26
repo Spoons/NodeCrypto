@@ -42,19 +42,23 @@ const schema = {
         let values = "";
         properties.forEach(function(p) {
             //do not write id to db if no id exists
-            if (p.column_name == 'id' && p.value == null) {
-                return;
+            if (p.column_name == 'id' && !p.value) {
+                query+=p.column_name + ", ";
+                values+=p.value + ", ";
+            }else{
+                query+=p.column_name + ", ";
+                values+="\'"+p.value + "\', ";    
             }
-            query+=p.column_name + ", ";
-            values+="\'"+p.value + "\', ";
+            
         });
         query = query.substring(0, query.length-2) + ") VALUES (";
-        query += values + ")";
+        query += values + ")";  
         query = query.substring(0, query.length-3);
         query += ");"
-        let info = db.prepare(query).run();
-
-        this.id.value = info.lastInsertROWID;
+        console.log("\tQUERY: "+query);
+        let last_id = db.prepare(query).run().lastInsertROWID;
+        this.id.value = last_id;
+        return last_id;
     },
 
     // Optional search term allows querying via other columns, such as username. Also allows for string value searching.
@@ -80,9 +84,9 @@ const schema = {
 
     load_multiple: function(value, column) {
         let q = `SELECT * FROM ${this.properties.table_name} WHERE ${column}='${value}'`;
-        let v = db.prepare(q).get();
+        let v = db.prepare(q).all();
         if (v === undefined) {
-
+            console.log("[schema: load_multiple] Query returned undefined... somehow?");
             return(v);
         } else {
             return(v);

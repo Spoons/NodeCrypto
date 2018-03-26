@@ -21,16 +21,15 @@ let file_controller = {
 
         let newFileModel = new file_model();
 
-        let err = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_ext, uploaded_file.file_data.toString('hex'), uploaded_file.user_id, uploaded_file.file_key);
-        let new_id = newFileModel.schema.id.value;
-        console.log("new id value: " + new_id);
+        let returned_id = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_ext, uploaded_file.file_data.toString('hex'), uploaded_file.user_id, uploaded_file.file_key);
 
-        if (err){
+        if (!returned_id){
             req.flash('error_message', {message: "Something went horribly, horribly wrong. Please don't do that again."});
             res.redirect('/');
         }else{
             req.flash('success_message', "File uploaded successfully");
-            res.redirect(`/files/file/${new_id}`);
+            res.redirect(`/files/file/${returned_id}`);
+
         }
 
   },
@@ -101,6 +100,7 @@ let file_controller = {
 
   get_files_route: function(req, res) {
       let files = fileController.get_files_by_user(req.user.schema.id.value);
+      console.log(files);
       res.render('files/all_files', {files: files});
   },
 
