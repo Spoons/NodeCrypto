@@ -29,6 +29,7 @@ let file_controller = {
         }else{
             req.flash('success_message', "File uploaded successfully");
             res.redirect(`/files/file/${returned_id}`);
+
         }
 
   },

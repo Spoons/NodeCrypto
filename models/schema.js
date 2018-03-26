@@ -57,6 +57,7 @@ const schema = {
         query += ");"
         console.log("\tQUERY: "+query);
         let last_id = db.prepare(query).run().lastInsertROWID;
+        this.id.value = last_id;
         return last_id;
     },
 
