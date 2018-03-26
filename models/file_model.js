@@ -45,18 +45,19 @@ let file_model = function() {
     },
 
     this.schema = Object.assign(this.schema, schema_p);
-
+    
     this.set = function(id, name, extension, data, user, key) {
         try{
-            this.schema.id.value = id;
+            this.schema.id.value = null;
             this.schema.name.value = name;
             this.schema.extension.value = extension;
             this.schema.data.value = data;
             this.schema.user.value = user;
             this.schema.key.value = key;
-            this.schema.write();
+            let returned_id = this.schema.write();
+            return returned_id;
         }catch(err){
-            return err;
+            return null;
         }   
     },
     this.to_string = function() {

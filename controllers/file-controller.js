@@ -11,7 +11,7 @@ let file_controller = {
 
         let file_extension = in_file.name.substr(in_file.name.lastIndexOf('.')+1, in_file.name.length);
         const uploaded_file = {
-            file_id: 1,
+            file_id: null,
             file_name: in_file.name,
             file_ext: file_extension,
             file_data: in_file.data,
@@ -21,14 +21,15 @@ let file_controller = {
 
         let newFileModel = new file_model();
 
-        let err = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_ext, uploaded_file.file_data.toString('hex'), uploaded_file.user_id, uploaded_file.file_key);
+        let returned_id = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_ext, uploaded_file.file_data.toString('hex'), uploaded_file.user_id, uploaded_file.file_key);
 
-        if (err){
+        if (!returned_id){
             req.flash('error_message', {message: "Something went horribly, horribly wrong. Please don't do that again."});
             res.redirect('/');
         }else{
             req.flash('success_message', "File uploaded successfully");
-            res.redirect(`/files/file/${uploaded_file.file_id}`);
+            res.redirect(`/files/file/${returned_id}`);
+
         }
 
   },
@@ -99,6 +100,7 @@ let file_controller = {
 
   get_files_route: function(req, res) {
       let files = fileController.get_files_by_user(req.user.schema.id.value);
+      console.log(files);
       res.render('files/all_files', {files: files});
   },
 
