@@ -55,7 +55,15 @@ let user_controller = {
         res.render('users/register');
     },
     user_get: (req,res) => {
-
+        let load_user = new user_model();
+        console.log("User load id: " + req.params.id);
+        let user = this.user_controller.load_by_id(req.params.id);
+        if (user){
+            res.render('users/user', {user: user});
+        }else{
+            req.flash('error_message', {message: "Something went wrong, please try again!"});
+        }
+        console.log("USER INFO: " + user);
     },
     load_by_username: function(username) {
         let load_user = new user_model();
@@ -64,8 +72,8 @@ let user_controller = {
     },
     load_by_id: function(id) {
         let load_user = new user_model();
-        let user = load_user.schema.load(id);
-        return user.schema;
+        load_user.schema.load(id);
+        return load_user;
     },
     delete_by_id: function(id) {
         return;

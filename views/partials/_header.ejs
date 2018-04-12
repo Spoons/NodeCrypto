@@ -23,12 +23,16 @@
                       <li><a href="/files/files">Files</a></li>
                       
                       <!-- //TODO: Replace with /users/<%= user.schema.id %> -->
-                      <li><a href="/">Account</a></li>
+                      <li><a href="/users/<%= user.schema.id.value %>">Account</a></li>
                      <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <% if (user) { %>
-                            <li><p class="navbar-text signed-in-as">Signed in as <%= user.schema.username.value %></p></li>
+                            <li
+                                <p class="navbar-text signed-in-as">Signed in as 
+                                   <a href="/users/<%= user.schema.id.value %>"><%= user.schema.username.value %></a> 
+                                </p>
+                            </li>
                             <li><a href="/users/logout">Logout</a></li>
                         <% }else{ %>
                             <li><a href="/users/register">Register</a></li>
