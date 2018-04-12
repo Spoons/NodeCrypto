@@ -36,20 +36,14 @@ const model_generic = {
         let q = `SELECT * FROM ${this.get_table_ref()} WHERE id=${id}`;
         let row = db.prepare(q).get();
 
-        //console.log(row);
         for (var property in this) {
             if (this.is_child_property(property) == true) {
                 this[property] = row[property];
             }
         }
-
-
     },
 
     write: function() {
-        if (this.ensure_not_null == false) {
-            console.log("Writing null " + this.get_table_ref() + " model!!");
-        }
         let columns = "(";
         let values = "(";
 
@@ -69,7 +63,6 @@ const model_generic = {
         values += ")";
 
         let query = 'INSERT OR REPLACE INTO ' + this.get_table_ref() + columns + " VALUES " + values + ";";
-        console.log(query);
         let results = db.prepare(query).run();
 
         if (this.id == null) {
@@ -110,7 +103,6 @@ const model_generic = {
     },
 
     to_string: function() {
-        //console.log("id: " + this.id, this.name, this.data)
         let output = "";
         for (var property in this) {
             if (this.is_child_property(property) == true) {
@@ -121,13 +113,12 @@ const model_generic = {
     },
 
     print: function() {
-        console.log(this.to_string());
+        console.log("====================" + this.to_string() + "====================");
     },
 
     ensure_not_null: function() {
         for (var property in this) {
             if (this.is_child_property() == true) {
-                //console.log(property);
                 if (this[property] == null) {
                     return (false);
                 }

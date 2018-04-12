@@ -54,8 +54,7 @@ const schema = {
         query = query.substring(0, query.length-2) + ") VALUES (";
         query += values + ")";  
         query = query.substring(0, query.length-3);
-        query += ");"
-        console.log("\tQUERY: "+query);
+        query += ");";
         let last_id = db.prepare(query).run().lastInsertROWID;
         this.id.value = last_id;
         return last_id;
@@ -86,7 +85,6 @@ const schema = {
         let q = `SELECT * FROM ${this.properties.table_name} WHERE ${column}='${value}'`;
         let v = db.prepare(q).all();
         if (v === undefined) {
-            console.log("[schema: load_multiple] Query returned undefined... somehow?");
             return(v);
         } else {
             return(v);

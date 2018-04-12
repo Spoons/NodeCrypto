@@ -100,7 +100,6 @@ let file_controller = {
 
   get_files_route: function(req, res) {
       let files = fileController.get_files_by_user(req.user.schema.id.value);
-      console.log(files);
       res.render('files/all_files', {files: files});
   },
 

@@ -58,7 +58,7 @@ let user_model = function() {
         return(output);
     }
     this.print = function() {
-        console.log(this.to_string());
+        console.log("====================" + this.to_string() + "====================");
     }
 }
 user_model.sanity = function() {
@@ -77,7 +77,7 @@ user_model.sanity = function() {
     new_model.print();
 
     if (t1 === t2) {
-        console.log("user-model: sanity check pass!");
+        console.log("[USER MODEL]: Sanity check pass!\n");
         return (true);
     } else {
         return (false);
