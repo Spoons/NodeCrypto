@@ -3,8 +3,8 @@
         <main>
             <h1><%= user.schema.username.value %>'s Account</h1>
             
-            <a href="/files/files">View my files</a>
-            <a href="/files/">Upload a file</a>
+            <a href="/<%= user.schema.id.value %>/files/files">View my files</a>
+            <a href="/<%= user.schema.id.value %>/files/">Upload a file</a>
             <a href="/users/logout">Logout</a>
         </main>
         

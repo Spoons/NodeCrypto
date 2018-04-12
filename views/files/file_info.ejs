@@ -12,7 +12,7 @@
                 
             </ul>
             
-            <form action="/files/file/<%= file_info.file_id %>/download" method="POST">
+            <form action="/<%= user.schema.id.value %>/files/file/<%= file_info.file_id %>/download" method="POST">
                 <input type="hidden" name="file_name" value="<%= file_info.file_name %>">
                 <input type="hidden" name="file_data" value="<%= file_info.file_data %>">
                 <input type="hidden" name="file_ext" value="<%= file_info.file_ext %>">

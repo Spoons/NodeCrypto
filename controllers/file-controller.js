@@ -28,7 +28,7 @@ let file_controller = {
             res.redirect('/');
         }else{
             req.flash('success_message', "File uploaded successfully");
-            res.redirect(`/files/file/${returned_id}`);
+            res.redirect(`/${req.user.schema.id.value}/files/file/${returned_id}`);
 
         }
 

@@ -56,8 +56,8 @@ let user_controller = {
     },
     user_get: (req,res) => {
         let load_user = new user_model();
-        console.log("User load id: " + req.params.id);
-        let user = this.user_controller.load_by_id(req.params.id);
+        console.log("User load id: " + req.params.userID);
+        let user = this.user_controller.load_by_id(req.params.userID);
         if (user){
             res.render('users/user', {user: user});
         }else{
