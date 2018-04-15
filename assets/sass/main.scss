@@ -8,6 +8,29 @@ html, body{
 ul{
     list-style-type: none;
 }
+#main_logo_container{
+    &>img{
+        border: 5px solid white;
+        padding: 1em;
+        width: 20vw;
+        border-radius: 20px;
+        background-color: rgba(0,0,0,0.2);
+        
+        @media (max-width: $phone-width){
+            width: 60vw;
+        }
+    }
+}
+
+.navbar-brand{
+    margin: 0;
+    padding: 0;
+    
+    @media (max-width: $phone-width){
+        margin-left: 1em;
+    }
+}
+
 .center-content{
     margin: 0 auto;
     text-align: center;
