@@ -1,23 +1,25 @@
 <%- include ../partials/_header.ejs %>
         
         <main>
-            
-            <ul id="file_data">
-                <li class="uploader">Uploaded by [ID]: <%= file_info.uploader_id %></li>
-                <ul>
-                    <li class="name">Name: <%= file_info.file_name %></li>
-                    <li class="name">Extension: <%= file_info.file_ext %></li>
-                    <li class="data">Data Length [Hex]: <%= file_info.file_data.length %></li>    
-                </ul>
-                
-            </ul>
-            
-            <form action="/<%= user.schema.id.value %>/files/file/<%= file_info.file_id %>/download" method="POST">
-                <input type="hidden" name="file_name" value="<%= file_info.file_name %>">
-                <input type="hidden" name="file_data" value="<%= file_info.file_data %>">
-                <input type="hidden" name="file_ext" value="<%= file_info.file_ext %>">
-                <button type="submit" class="btn btn-info btn-lg">Download</button>
-            </form>
+            <div class="jumbotron small">
+                <div class="jumbotron-header">
+                    <h2>File: <%= file_info.file_name %></h2>
+                </div>
+                <div class="jumbotron-body">
+                    <ul>
+                        <li class="name">Name: <%= file_info.file_name %></li>
+                        <li class="name">Extension: <%= file_info.file_ext %></li>
+                        <li class="data">File size: Approx <%= Math.round(file_info.file_data.length / 1024) %>KB</li>    
+                    </ul>
+
+                    <form action="/<%= user.schema.id.value %>/files/file/<%= file_info.file_id %>/download" method="POST">
+                        <input type="hidden" name="file_name" value="<%= file_info.file_name %>">
+                        <input type="hidden" name="file_data" value="<%= file_info.file_data %>">
+                        <input type="hidden" name="file_ext" value="<%= file_info.file_ext %>">
+                        <button type="submit" class="btn btn-success btn-lg">Download</button>
+                    </form>
+                </div>
+            </div>
         </main>
         
  <%- include ../partials/_footer.ejs %>
