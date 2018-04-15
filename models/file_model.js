@@ -69,7 +69,7 @@ let file_model = function() {
         return(output);
     }
     this.print = function() {
-        console.log(this.to_string());
+        console.log("====================" + this.to_string() + "====================");
     }
     
 }
@@ -88,7 +88,7 @@ file_model.sanity = function() {
     new_model.print();
 
     if (t1 === t2) {
-        console.log("file-model: sanity check pass!");
+        console.log("[FILE MODEL]: Sanity check pass!\n");
         return (true);
     } else {
         return (false);

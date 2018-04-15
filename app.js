@@ -65,7 +65,7 @@ app.use((req,res,next) => {
 
 // App routing
 app.use('/', rootPath);
-app.use('/files', middleware.isAuthenticated, filesPath);
+app.use('/:userID/files', middleware.isAuthenticated, middleware.isAuthenticatedByID, filesPath);
 app.use('/users', usersPath);
 app.use('*', errorPath_NOT_FOUND);
 

@@ -5,14 +5,12 @@ const passport = require('passport'),
 
 let user_controller = {
     login: (req,res) => {
-        console.log(req.body);
         res.redirect('/');
     },
     get_login: (req,res) => {
         res.render('users/login');
     },
     logout: (req,res) => {
-        console.log("Got here!");
         req.logout();
         req.flash('success_message', 'Successfully logged out.');
         res.redirect('/users/login');
@@ -28,8 +26,6 @@ let user_controller = {
         const errors = req.validationErrors();
 
         if (errors){
-            // Rerender page, pass errors
-            console.log(errors);
             res.render('users/register', {
                 errors: errors
             });
@@ -41,12 +37,10 @@ let user_controller = {
                   password: req.body.password,
                   password_confirmation: req.body.password_conf
             }
-            console.log("Received user:\n\t" + user_register_info.first_name);
-
+            
             // Add user to DB
             let hash = user_controller.hash_password(user_register_info.password);
             this.user_controller.create_user(user_register_info.user_name, hash);
-            console.log("New user added to DB:");
             req.flash('success_message', "Successfully registered.");
             res.redirect('/');
         }
@@ -55,7 +49,13 @@ let user_controller = {
         res.render('users/register');
     },
     user_get: (req,res) => {
-
+        let load_user = new user_model();
+        let user = this.user_controller.load_by_id(req.params.userID);
+        if (user){
+            res.render('users/user', {user: user});
+        }else{
+            req.flash('error_message', {message: "Something went wrong, please try again!"});
+        }
     },
     load_by_username: function(username) {
         let load_user = new user_model();
@@ -64,8 +64,8 @@ let user_controller = {
     },
     load_by_id: function(id) {
         let load_user = new user_model();
-        let user = load_user.schema.load(id);
-        return user.schema;
+        load_user.schema.load(id);
+        return load_user;
     },
     delete_by_id: function(id) {
         return;
@@ -88,7 +88,6 @@ let user_controller = {
 
     // --- TESTING CODING ----
     create_test_user: function() {
-        console.log("Adding test user");
         user_controller.create_user("rick", user_controller.hash_password("morty"));
 
           // Generate hashed PW

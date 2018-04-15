@@ -1,9 +1,11 @@
 <%- include ../partials/_header.ejs %>
         
         <main>
-            <h1>User accounts page</h1>
+            <h1><%= user.schema.username.value %>'s Account</h1>
             
-            <p>TODO: List user account information</p>
+            <a href="/<%= user.schema.id.value %>/files/files">View my files</a>
+            <a href="/<%= user.schema.id.value %>/files/">Upload a file</a>
+            <a href="/users/logout">Logout</a>
         </main>
         
 <%- include ../partials/_footer.ejs %>

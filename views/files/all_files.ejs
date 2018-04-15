@@ -2,13 +2,13 @@
         
         <main>
            <ul id="all_files">
-              <% if (files){ %>
+              <% if (files.length){ %>
                   <% if (Array.isArray(files)){ %> 
                       <% files.forEach(function(file){ %>
                            <li>File: 
                                <ul>
                                    <li>
-                                       <a href="/files/file/<%= file.id %>">
+                                       <a href="/<%= user.schema.id.value %>/file/<%= file.id %>">
                                            <%= file.name %>        
                                        </a>
                                    </li>
@@ -19,7 +19,7 @@
                         <!-- This part shouldn't ever be used. -->
                       <li>File: 
                                <ul>
-                                   <li><a href="/files/file/1"><%= files.name %></a></li>
+                                   <li><a href="/<%= user.schema.id.value %>/files/file/1"><%= files.name %></a></li>
                                </ul>
                       </li>
                   <% } %>
@@ -29,7 +29,7 @@
                
            </ul> 
            
-           <a href="/files/">
+           <a href="/<%= user.schema.id.value %>/files/">
                <button class="btn btn-primary btn-lg">Upload a file</button>
            </a>
         </main>

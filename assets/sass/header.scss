@@ -25,6 +25,14 @@ header{
     }
     
     .signed-in-as{
+        margin-bottom: 0;
+        &> a{
+            display: inline;
+            font-weight: bold;
+            color: $link-blue !important;
+            padding: 0;    
+        }
+        
         @media (max-width: $phone-width){
             padding-left: 15px;
         }

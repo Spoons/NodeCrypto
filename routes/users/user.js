@@ -9,7 +9,7 @@ const express = require('express'),
 router.get('/register', userController.get_register);
 router.get('/login', userController.get_login);
 router.get('/logout', middleware.isAuthenticated, userController.logout);
-router.get('/:id', middleware.isAuthenticated, userController.user_get);
+router.get('/:userID', middleware.isAuthenticated, middleware.isAuthenticatedByID, userController.user_get);
 
 
 router.post('/login', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/users/login', failureFlash: true}), userController.login);
