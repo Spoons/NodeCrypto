@@ -3,35 +3,64 @@
         <main>
            <ul id="all_files">
               <% if (files.length){ %>
-                  <% if (Array.isArray(files)){ %> 
-                      <% files.forEach(function(file){ %>
-                           <li>File: 
-                               <ul>
-                                   <li>
-                                       <a href="/<%= user.schema.id.value %>/file/<%= file.id %>">
-                                           <%= file.name %>        
-                                       </a>
-                                   </li>
-                               </ul>
-                           </li>
-                       <% }) %>
-                  <% }else{ %>
-                        <!-- This part shouldn't ever be used. -->
-                      <li>File: 
-                               <ul>
-                                   <li><a href="/<%= user.schema.id.value %>/files/file/1"><%= files.name %></a></li>
-                               </ul>
-                      </li>
-                  <% } %>
+                  <div class="jumbotron">
+                      <div class="jumbotron-header">
+                          <h2>Files Uploaded by <%= user.schema.username.value %></h2>    
+                      </div>
+                      <div class="jumbotron-body">
+                           <h3>Files:</h3>
+                           <div class="all_files_container">
+                                <% if (Array.isArray(files)){ %> 
+                                    <% files.forEach(function(file){ %>
+                                        <li>
+                                            <ul>
+                                                <li class="form-file-info">
+                                                    <span class="form-file-name"><%= file.name %></span>
+                                                    - <a href="/<%= user.schema.id.value %>/file/<%= file.id %>">More Info</a> | 
+                                                    - <a href="">Download</a>
+                                                </li>
+                                                
+                                                <% if (files[files.length-1] != file){ %>
+                                                    <hr>
+                                                <% } %>
+                                            </ul>
+                                        </li>
+                                    <% }) %>
+                                <% }else{ %>
+                                    <!-- This part shouldn't ever be used. -->
+                                    <li>File: 
+                                        <ul>
+                                            <li><a href="/<%= user.schema.id.value %>/files/file/1"><%= files.name %></a></li>
+                                        </ul>
+                                    </li>
+                                <% } %>
+                           </div>
+                        <button class="btn btn-primary btn-success btn-lg button-center-bottom">
+                            <a href="/<%= user.schema.id.value %>/files/">
+                                Visit file upload page
+                            </a>
+                        </button>
+                      </div>
+                   </div>
+              </ul>
               <% }else{ %>
-                  <p>No files uploaded by this user</p>
+                  <div class="jumbotron">
+                      <div class="jumbotron-header">
+                          <h2>No files for this user</h2>    
+                      </div>
+                      <div class="jumbotron-body">
+                        <p>There's currently no files uploaded by this user. Click the button below to be taken to the file upload page.</p>
+
+                        <p>Click below to get started</p>
+
+                        <button class="btn btn-primary btn-success btn-lg">
+                            <a href="/<%= user.schema.id.value %>/files/">
+                                Visit file upload page
+                            </a>
+                        </button>
+                      </div>
+                   </div>
               <% } %>
-               
-           </ul> 
-           
-           <a href="/<%= user.schema.id.value %>/files/">
-               <button class="btn btn-primary btn-lg">Upload a file</button>
-           </a>
         </main>
         
  <%- include ../partials/_footer.ejs %>

@@ -1,0 +1,36 @@
+@import '../variables';
+
+#uploadForm{
+    @media (max-width: $phone-width){
+        width: 100%;
+        
+        button{
+            width: 100%;
+        }
+        
+        input{
+            padding-left: 0;
+        }
+    }
+}
+
+.all_files_container{
+    background-color: rgba(0,0,0,0.1);
+    padding: 1em;
+    border: 2px solid #c0c0c0;
+}
+
+.form-file-info{
+    &> span{
+        color: white;
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+    
+    &>a {
+        color: $link-blue;
+        &:hover{
+            color: white;
+        }
+    }
+}

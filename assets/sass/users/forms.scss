@@ -2,11 +2,12 @@
 
 #login,
 #signup{
+    color: $white;
     margin: 0 auto;
     padding: 2em;
-    border: 2px solid black;
-    border-radius: 20px;
-    background-color: lighten($black, 80%);
+    border: 1px solid white;
+    border-radius: 0px;
+    background-color: $dark-content;
     h1{
         text-align: center;
         text-decoration: underline;
@@ -20,11 +21,13 @@
         margin: 2em 0;
         input,
         &-addon{ 
-            border: 1px solid $dark-content;
         }
         &-addon{
             min-width: 25%;
             font-weight: bold;
+            border: 1px solid $white;
+            color: white;
+            background-color: $dark-content;
         }
     }
     
@@ -32,3 +35,6 @@
         width: 50%;
     }
 }
+
+
+

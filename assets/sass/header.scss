@@ -8,6 +8,9 @@ header{
             &-collapse#navbar_main{
                 li > a{
                     color: $white;
+                    &:hover{
+                        text-shadow: 0 0 2px white;
+                    }
                 }
             }
             &-header{
@@ -29,7 +32,6 @@ header{
         &> a{
             display: inline;
             font-weight: bold;
-            color: $link-blue !important;
             padding: 0;    
         }
         

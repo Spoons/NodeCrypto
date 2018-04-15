@@ -1,11 +1,21 @@
 <%- include ../partials/_header.ejs %>
         
-        <main>
-            <h1><%= user.schema.username.value %>'s Account</h1>
-            
-            <a href="/<%= user.schema.id.value %>/files/files">View my files</a>
-            <a href="/<%= user.schema.id.value %>/files/">Upload a file</a>
-            <a href="/users/logout">Logout</a>
+        <main>            
+            <div class="jumbotron small">
+            <div class="jumbotron-header">
+                <h2>Welcome, <%= user.schema.username.value %></h2>    
+            </div>
+                <div class="jumbotron-body">
+                    <p>Follow the form below to upload a file to your account</p>
+                    
+                    <div class="center-content">
+                        <button class="btn btn-primary btn-lg btn-success"><a href="/<%= user.schema.id.value %>/files/files">View my files</a></button>
+                        <button class="btn btn-primary btn-lg btn-success"><a href="/<%= user.schema.id.value %>/files/">Upload a file</a></button>
+                        <button class="btn btn-primary btn-lg btn-success"><a href="/users/logout">Logout</a></button>
+                    </div>
+                    
+                </div>
+            </div>
         </main>
         
 <%- include ../partials/_footer.ejs %>

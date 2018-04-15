@@ -1,29 +1,40 @@
 <%- include partials/_header.ejs %>
-        
+       
+
         <main>            
-            <div id="temporary">
-                <h2>Hi-Fi Prototype</h2>
-                <ul>
-                    <li>Currently completed
-                        <ul>
-                            <li>User Registration & Login</li>
-                            <li>Route guarding & Authentication [redirect]</li>
-                            <li>User password encryption & decryption</li>
-                            <li>File upload & DB Storage [Hex]</li>
-                            <li>File download</li>
-                            <li>Mobile responsivity</li>
-                            <li>Flash messages</li>
-                        </ul>
-                    </li>
-                    <li>To be completed
-                        <ul>
-                            <li>File encryption (similar to user PW encryption)</li>
-                            <li>One-Time links / File downloads</li>
-                            <li>Style polishing</li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+          
+          <div class="text-center" id="main_logo_container">
+              <img src="/images/logo_medium.png" alt="NodeCrypto Logo" class="rounded">    
+          </div>
+          
+           <div class="jumbotron">
+             <% if (!user){ %>
+              <div class="jumbotron-header">
+                  <h2>About NodeCrypto</h2>    
+              </div>
+              <div class="jumbotron-body">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione maiores, repellat veniam assumenda quaerat. Animi quis aspernatur voluptas maxime fugit laborum quo, natus modi, labore, hic soluta unde eligendi atque.</p>
+
+                <p>Sign up or Log in to get started</p>
+              
+                <a class="btn btn-primary btn-success btn-lg" href="/users/register">Register</a>
+                <a class="btn btn-primary btn-lg" href="/users/login">Login</a>
+              </div>
+              <% }else{ %>
+               <div class="jumbotron-header">
+                  <h2>NodeCrypto - For your safe file storage links</h2>    
+               </div>
+              <div class="jumbotron-body">
+                <p>Check below for some common links:</p>
+
+                <div class="center-content">
+                        <button class="btn btn-primary btn-lg btn-success"><a href="/<%= user.schema.id.value %>/files/files">View my files</a></button>
+                        <button class="btn btn-primary btn-lg btn-success"><a href="/<%= user.schema.id.value %>/files/">Upload a file</a></button>
+                        <button class="btn btn-primary btn-lg btn-success"><a href="/users/logout">Logout</a></button>
+                </div>
+              </div>
+              <% } %>
+           </div>
         </main>
         
 <%- include partials/_footer.ejs %>
