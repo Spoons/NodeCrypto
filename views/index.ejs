@@ -1,28 +1,32 @@
 <%- include partials/_header.ejs %>
-       
 
-        <main>            
-          
+
+        <main>
+
           <div class="text-center" id="main_logo_container">
-              <img src="/images/logo_medium.png" alt="NodeCrypto Logo" class="rounded">    
+              <img src="/images/logo_medium.png" alt="NodeCrypto Logo" class="rounded">
           </div>
-          
+
            <div class="jumbotron">
              <% if (!user){ %>
               <div class="jumbotron-header">
-                  <h2>About NodeCrypto</h2>    
+                  <h2>About NodeCrypto</h2>
               </div>
               <div class="jumbotron-body">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione maiores, repellat veniam assumenda quaerat. Animi quis aspernatur voluptas maxime fugit laborum quo, natus modi, labore, hic soluta unde eligendi atque.</p>
+                <h3>Welcome to NodeCrypto!</h3><br><br>
+                <p>
+                We are an open-source encrypted file storage platform based on Node.js.
+                Our objective is to show how online service providers can protect user privacy.
+                </p>
 
-                <p>Sign up or Log in to get started</p>
-              
+                <p>Sign up or Log in to get started.</p>
+
                 <a class="btn btn-primary btn-success btn-lg" href="/users/register">Register</a>
                 <a class="btn btn-primary btn-lg" href="/users/login">Login</a>
               </div>
               <% }else{ %>
                <div class="jumbotron-header">
-                  <h2>NodeCrypto - For your safe file storage links</h2>    
+                  <h2>NodeCrypto - For your safe file storage links</h2>
                </div>
               <div class="jumbotron-body">
                 <p>Check below for some common links:</p>
@@ -36,5 +40,5 @@
               <% } %>
            </div>
         </main>
-        
+
 <%- include partials/_footer.ejs %>
