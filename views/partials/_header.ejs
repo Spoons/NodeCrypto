@@ -21,10 +21,10 @@
                      <% if (user){ %>
                       <li><a href="/">Home</a></li>
                       
-                      <!-- //TODO: Replace with /files/<%= user.schema.id %>  -->
-                      <li><a href="/<%= user.schema.id.value %>/files/files">Files</a></li>
+                      <li><a href="/<%= user.schema.id.value %>/files/files">My Files</a></li>
                       
-                      <!-- //TODO: Replace with /users/<%= user.schema.id %> -->
+                      <li><a href="/<%= user.schema.id.value %>/files/">Upload</a></li>
+                      
                       <li><a href="/users/<%= user.schema.id.value %>">Account</a></li>
                      <% } %>
                     </ul>
