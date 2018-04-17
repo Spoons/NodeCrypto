@@ -67,6 +67,9 @@ let key_model = function() {
         let prop = this.schema.get_schema_properties();
         let output = "";
         prop.forEach(function(p) {
+            if(p.column_name == "private_key" || p.column_name == "public_key") {
+                return;
+            }
             output+= p.column_name + ": " + p.value + " ";
         });
         return(output);
@@ -82,7 +85,6 @@ key_model.sanity = function() {
     test_model.schema.create_table();
 
     test_model.set(1, "test_key", test_keys.private_key, test_keys.public_key, 1, 1);
-    console.log(test_model);
     let t1 = test_model.to_string();
     test_model.print();
 
