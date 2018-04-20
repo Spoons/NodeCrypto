@@ -35,11 +35,11 @@
                                     </li>
                                 <% } %>
                            </div>
-                        <button class="btn btn-primary btn-success btn-lg button-center-bottom">
-                            <a href="/<%= user.schema.id.value %>/files/">
-                                Visit file upload page
-                            </a>
-                        </button>
+                        
+                        <a class="btn btn-primary btn-success btn-lg button-center-bottom" href="/<%= user.schema.id.value %>/files/">
+                            Visit file upload page
+                        </a>
+                        
                       </div>
                    </div>
               </ul>
@@ -52,12 +52,11 @@
                         <p>There's currently no files uploaded by this user. Click the button below to be taken to the file upload page.</p>
 
                         <p>Click below to get started</p>
-
-                        <button class="btn btn-primary btn-success btn-lg">
-                            <a href="/<%= user.schema.id.value %>/files/">
-                                Visit file upload page
-                            </a>
-                        </button>
+                        
+                        <a class="btn btn-primary btn-success btn-lg" href="/<%= user.schema.id.value %>/files/">
+                            Visit file upload page
+                        </a>
+                        
                       </div>
                    </div>
               <% } %>
