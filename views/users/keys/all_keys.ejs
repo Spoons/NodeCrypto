@@ -1,0 +1,35 @@
+<%- include ../../partials/_header.ejs %>
+          
+
+      <main>
+        <div class="jumbotron small">
+            <div class="jumbotron-header">
+                <h2>Keys</h2>
+            </div>
+            <div class="jumbotron-body">
+               <% if (KEYS && KEYS.length != 0){ %>
+                   <p>
+                       You currently have <%= (KEYS.length == 1 ? '1 key.' : KEYS.length + ' keys.') %>
+                   </p>
+                   <ul>
+                   <% KEYS.forEach(function(key){ %>
+                        <li class="name">
+                           <strong>Key <%= key.id %></strong>: <%= key.name %>
+                        </li>    
+                   <% }) %>
+                   </ul> 
+               <% }else{ %>
+                   <p>There are no keys currently associated with your account.</p>
+               <% } %>
+
+                <div class="center-content">
+                    <a class="btn btn-primary btn-lg btn-success"
+                    onclick="promptPGP('<%= user.schema.id.value %>')">
+                        Generate New Key
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+<%- include ../../partials/_footer.ejs %>

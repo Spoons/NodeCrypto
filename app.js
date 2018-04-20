@@ -16,6 +16,7 @@ const express = require('express'),
       secret = require('./secret'),
       rootPath = require('./routes/root'),
       filesPath = require('./routes/files/files'),
+      keysPath = require('./routes/keys/keys'),
       fileUpload = require('express-fileupload'),
       usersPath = require('./routes/users/user'),
       errorPath_NOT_FOUND = require('./routes/error'),
@@ -67,6 +68,7 @@ app.use((req,res,next) => {
 app.use('/', rootPath);
 app.use('/:userID/files', middleware.isAuthenticated, middleware.isAuthenticatedByID, filesPath);
 app.use('/users', usersPath);
+app.use('/:userID/keys', middleware.isAuthenticated, middleware.isAuthenticatedByID, keysPath);
 app.use('*', errorPath_NOT_FOUND);
 
 
