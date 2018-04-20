@@ -3,7 +3,8 @@ const file_model = require('../models/file_model'),
       upload = multer(),
       path = require('path'),
       mime = require('mime'),
-      fs = require('fs');
+      fs = require('fs'),
+      key_model = require('../models/key_model').key_model;
 
 let file_controller = {
   upload_file: (req, res) => {
@@ -35,7 +36,9 @@ let file_controller = {
   },
 
   file_route_get : (req,res) => {
-      res.render('files/index');
+      let keyModelInstance = new key_model();
+      keyModelInstance.schema.load(1);
+      res.render('files/index', {PUBLIC_KEY: keyModelInstance.schema.return_properties_array().public_key, PRIVATE_KEY: keyModelInstance.schema.return_properties_array().private_key});
   },
 
   file_id_get : (req,res) => {
