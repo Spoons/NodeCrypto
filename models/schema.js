@@ -17,7 +17,7 @@ const schema = {
     create_table: function() {
         let properties = this.get_schema_properties();
 
-        db.prepare("DROP TABLE IF EXISTS files").run();
+        db.prepare(`DROP TABLE IF EXISTS ${this.get_table_name()}`).run();
         let table_create_query = `CREATE TABLE ${this.get_table_name()} (`;
         properties.forEach(function(prop){
             table_create_query += prop.column_name +" "+ prop.db_type + ", ";
@@ -83,7 +83,6 @@ const schema = {
 
     load_multiple: function(value, column) {
         let q = `SELECT * FROM ${this.properties.table_name} WHERE ${column}='${value}'`;
-        console.log(q);
         let v = db.prepare(q).all();
         if (v === undefined) {
             return(v);
