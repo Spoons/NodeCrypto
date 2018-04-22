@@ -1,5 +1,5 @@
 'use strict';
- 
+
 var gulp = require('gulp');
 var sass = require('gulp-sass');
 var watch = require('gulp-watch');
@@ -29,7 +29,7 @@ gulp.task('sass', function() {
 gulp.task('js-concat', function() {
   return gulp.src(paths.js)
     .pipe(concat('src.js'))
-//    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(gulp.dest('./dist/js/'));
 });
 
