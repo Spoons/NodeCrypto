@@ -6,11 +6,23 @@ let key_controller = {
     get_all_keys: function(req,res){
         const user_id = req.user.schema.id.value,
               key_model_instance = new key_model();
-        
+
         const all_keys = key_model_instance.schema.load_multiple(user_id, 'user');
         res.render('users/keys/all_keys', {KEYS: all_keys});
     },
-    
+
+    get_single_key: function(req,res){
+        const user_id = req.user.schema.id.value,
+              key_model_instance = new key_model();
+
+        key_model_instance.schema.load(user_id, 'user');
+        let jsonObj = {
+          public_key: key_model_instance.schema.public_key.value
+        }
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(jsonObj));
+    },
+
     generate_key: function(req,res){
         console.log("Hit the function!");
         const passphrase = req.params.phrase;
@@ -19,12 +31,12 @@ let key_controller = {
             passwords: [passphrase],              // multiple passwords possible
             armor: false                              // don't ASCII armor (for Uint8Array output)
         };
-        let encrypted = '';
+        let encrypted = 'cats';
 
-        openpgp.encrypt(options).then(function(ciphertext) {
+        openPGP.encrypt(options).then(function(ciphertext) {
             encrypted = ciphertext.message.packets.write(); // get raw encrypted packets as Uint8Array
         });
-        
+
         console.log(encrypted);
     }
 };

@@ -8,7 +8,7 @@ const schema = {
             data_object[prop.column_name] = prop.value;
         });
 
-        
+
 
         return(data_object);
     },
@@ -17,7 +17,7 @@ const schema = {
     create_table: function() {
         let properties = this.get_schema_properties();
 
-        db.prepare("DROP TABLE IF EXISTS files").run();
+        db.prepare(`DROP TABLE IF EXISTS ${this.get_table_name()}`).run();
         let table_create_query = `CREATE TABLE ${this.get_table_name()} (`;
         properties.forEach(function(prop){
             table_create_query += prop.column_name +" "+ prop.db_type + ", ";
@@ -25,7 +25,7 @@ const schema = {
         });
         table_create_query = table_create_query.substring(0, table_create_query.length - 2);
         table_create_query += ');';
-        
+
         db.prepare(table_create_query).run();
     },
 
@@ -37,7 +37,7 @@ const schema = {
         let properties = this.get_schema_properties();
 
 
-        
+
         let query = "INSERT OR REPLACE INTO " + this.properties.table_name + "(";
         let values = "";
         properties.forEach(function(p) {
@@ -47,12 +47,12 @@ const schema = {
                 values+=p.value + ", ";
             }else{
                 query+=p.column_name + ", ";
-                values+="\'"+p.value + "\', ";    
+                values+="\'"+p.value + "\', ";
             }
-            
+
         });
         query = query.substring(0, query.length-2) + ") VALUES (";
-        query += values + ")";  
+        query += values + ")";
         query = query.substring(0, query.length-3);
         query += ");";
         let last_id = db.prepare(query).run().lastInsertROWID;
@@ -65,7 +65,6 @@ const schema = {
         let q = '';
 
         q = `SELECT * FROM ${this.properties.table_name} WHERE ${optional_search_term}='${id}';`;
-
         let v = db.prepare(q).get();
         let properties = this.get_schema_properties();
         let object = this;
@@ -83,7 +82,6 @@ const schema = {
 
     load_multiple: function(value, column) {
         let q = `SELECT * FROM ${this.properties.table_name} WHERE ${column}='${value}'`;
-        console.log(q);
         let v = db.prepare(q).all();
         if (v === undefined) {
             return(v);

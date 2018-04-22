@@ -90,6 +90,6 @@ pR7Jce4fzg4F3sjEoulOBNq6WHs2gAdLjUgdSTTq
 -----END PGP PUBLIC KEY BLOCK-----`;
 
 module.exports = {
-    public_key: nodecrypto_test_private_key,
+    public_key: nodecrypto_test_public_key,
     private_key: nodecrypto_test_private_key
 }

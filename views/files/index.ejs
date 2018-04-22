@@ -1,23 +1,27 @@
 <%- include ../partials/_header.ejs %>
-        
-        <main>    
+
+        <script>
+          const public_key = "<%= PUBLIC_KEY %>",
+                private_key = "<%= PRIVATE_KEY %>";
+        </script>
+        <main>
            <div class="jumbotron small">
             <div class="jumbotron-header">
-                <h2>Upload a file</h2>    
+                <h2>Upload a file</h2>
             </div>
                 <div class="jumbotron-body">
                     <p>Follow the form below to upload a file to your account</p>
 
-                    <form ref='uploadForm' 
-                    id='uploadForm' 
-                    action='http://localhost:3000/<%= user.schema.id.value %>/files/upload' 
-                    method='post' 
+                    <form ref='uploadForm'
+                    id='uploadForm'
+                    action='http://localhost:3000/<%= user.schema.id.value %>/files/upload'
+                    method='post'
                     encType="multipart/form-data">
                         <input type="file" name="uploadedFile" />
-                        <button type='submit' class="btn btn-primary btn-lg btn-success">Upload</button>
-                    </form> 
+                        <button id="uploadButton" class="btn btn-primary btn-lg btn-success" onclick="keyReq(event, <%= user.schema.id.value %>)">Upload</button>
+                    </form>
                 </div>
             </div>
         </main>
-        
+
  <%- include ../partials/_footer.ejs %>
