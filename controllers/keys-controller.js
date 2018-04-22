@@ -31,7 +31,7 @@ let key_controller = {
             passwords: [passphrase],              // multiple passwords possible
             armor: false                              // don't ASCII armor (for Uint8Array output)
         };
-        let encrypted = '';
+        let encrypted = 'cats';
 
         openPGP.encrypt(options).then(function(ciphertext) {
             encrypted = ciphertext.message.packets.write(); // get raw encrypted packets as Uint8Array

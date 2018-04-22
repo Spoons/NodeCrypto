@@ -4,6 +4,7 @@
 const form = document.querySelector('#uploadForm');
 const subBtn = document.querySelector('#uploadButton');
 
+const selected_file = {};
 // DOM ready
 document.addEventListener("DOMContentLoaded", function() {
 
@@ -22,12 +23,41 @@ const keyReq = (e, user_id) => {
   const request = new XMLHttpRequest();
   request.open("GET", query, true);
   request.send();
+
+  request.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      on_recieve_key(request.response);
+    }
+  }
+};
+
+const on_recieve_key = (json) => {
+    let public_key = JSON.parse(json).public_key;
+
+    //console.log(public_key);
+    console.log("public key recieved")
+
+
+    let encrypted = "cats2";
+    if (!selected_file.data instanceof ArrayBuffer) {
+        console.log("malformed data");
+    } else {
+        let options = {
+            data: new Uint8Array(selected_file.data),
+            publicKeys: openpgp.key.readArmored(public_key).keys,
+        };
+        openpgp.encrypt(options).then(function(ciphertext) {
+            encrypted = ciphertext.data;
+            console.log(encrypted);
+        });
+    }
+
 };
 
 // Functions
 function readerReady(e){
-  console.log(e);
   console.log(e.target.result);
+  selected_file.data= e.target.result;
 
   // TODO: call fn() for GPG code with e.target.result
 }
