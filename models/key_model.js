@@ -84,13 +84,14 @@ key_model.sanity = function() {
     test_model.schema.drop_table();
     test_model.schema.create_table();
 
+// key_model.set: (id: any, name: any, private_key: any, public_key: any, file: any, user: any) => any
     test_model.set(1, "test_key", test_keys.private_key, test_keys.public_key, 1, 2);
     let t1 = test_model.to_string();
     test_model.print();
 
     const new_model = new key_model();
 
-    new_model.schema.load(2);
+    new_model.schema.load(1);
     let t2 = new_model.to_string();
     new_model.print();
 
@@ -106,5 +107,3 @@ key_model.sanity = function() {
 module.exports.key_model = key_model;
 
 key_model.sanity();
-
-module.exports.key_model = key_model;

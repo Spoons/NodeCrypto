@@ -7,6 +7,7 @@ const express = require('express'),
 
 
 router.get('/all_keys', keysController.get_all_keys);
+router.get('/single_key', keysController.get_single_key);
 router.get('/generate/:phrase', keysController.generate_key);
-    
+
 module.exports = router;

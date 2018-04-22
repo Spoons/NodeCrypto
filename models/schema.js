@@ -65,7 +65,7 @@ const schema = {
         let q = '';
 
         q = `SELECT * FROM ${this.properties.table_name} WHERE ${optional_search_term}='${id}';`;
-
+        console.log(q);
         let v = db.prepare(q).get();
         let properties = this.get_schema_properties();
         let object = this;
