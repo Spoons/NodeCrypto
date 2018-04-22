@@ -31,14 +31,13 @@ const keyReq = (e, user_id) => {
   }
 };
 
-const on_recieve_key = (json) => {
+const on_recieve_key = async function(json) {
     let public_key = JSON.parse(json).public_key;
 
     //console.log(public_key);
     console.log("public key recieved")
 
 
-    let encrypted = "cats2";
     if (!selected_file.data instanceof ArrayBuffer) {
         console.log("malformed data");
     } else {
@@ -46,9 +45,9 @@ const on_recieve_key = (json) => {
             data: new Uint8Array(selected_file.data),
             publicKeys: openpgp.key.readArmored(public_key).keys,
         };
-        openpgp.encrypt(options).then(function(ciphertext) {
-            encrypted = ciphertext.data;
-            console.log(encrypted);
+        let result = await openpgp.encrypt(options).then(function(ciphertext) {
+            let encrypted = ciphertext.data;
+            return encrypted;
         });
     }
 
