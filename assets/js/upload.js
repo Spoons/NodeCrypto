@@ -2,7 +2,6 @@
 
 // Page constants
 const form = document.querySelector('#uploadForm'),
-      subBtn = document.querySelector('#uploadButton'),
       base_url = window.location.origin + '/',
       selected_file = {};
 
@@ -18,17 +17,28 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 // Request key from server to encrypt
-const keyReq = (e, user_id) => {
+const keyReq = (e, user_id, preferred_key = "") => {
   e.preventDefault();
-  let query = base_url + user_id + '/keys/single_key'
+  
   const xhr = new XMLHttpRequest();
-  xhr.open("GET", query, true);
-  xhr.send();
-
+  if (preferred_key == ""){
+      let query = base_url + user_id + '/keys/single_key/none'
+      
+      xhr.open("GET", query, true);
+      xhr.send();
+  }else{
+      let query = base_url + user_id + '/keys/single_key/' + preferred_key;
+      
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", query, true);
+      xhr.send();
+  }
+  
   // Check ready state complete and OK status
   xhr.onreadystatechange = function() {
     if (this.readyState == 4) {
         if (this.status == 200){
+            
             const key_pair = JSON.parse(xhr.response);
             if (key_pair.public_key.value != null && key_pair.private_key.value != null){
                 encrypt(key_pair, user_id);
@@ -68,7 +78,7 @@ const encrypt = async function(key_pair, user_id) {
 
 // Set file data when file reader finishes parsing data
 function readerReady(e){
-  console.log(e.target.result);
+  
   selected_file.data= e.target.result;
 }
 
@@ -110,14 +120,15 @@ function upload_file(file_data, user_id, key_pair){
 
 // Generates a new user key if none are available
 const generate_user_key = async function(event_data, user_id){
+    event_data.preventDefault();
     // Prompt user for passphrase
-    const passphrase = prompt("You currently have no keys associated with your account. Please enter a passphrase to generate a new key before uploading.");
+    const passphrase = prompt("Please enter a passphrase to generate a key.");
     const key_name = prompt("Please enter a name for this key.");
     
     // Set up options for keygen
     var options = {
         userIds: [{ id:user_id}],
-        numBits: 4096,
+        numBits: 2048,
         passphrase: passphrase
     };
     
@@ -146,5 +157,5 @@ function store_user_keys(key_pair, user_id, event_data){
     xhr.send(JSON.stringify(key_pair));
     
     // Encrypt with newely stored keys
-    // keyReq(event_data, user_id);
+    keyReq(event_data, user_id, key_pair.key_name);
 }

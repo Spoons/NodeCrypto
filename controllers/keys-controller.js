@@ -15,8 +15,16 @@ let key_controller = {
     get_single_key: function(req,res){
         const user_id = req.user.schema.id.value,
               key_model_instance = new key_model();
-
-        key_model_instance.schema.load(user_id, 'user');
+        
+        if (req.params.pref_key != "none"){
+            
+            key_model_instance.schema.load(req.params.pref_key, "name", "string");
+            
+            key_model_instance.to_string();
+        }else{
+            key_model_instance.schema.load(user_id, 'user');
+        }
+        
         let jsonObj = {
           public_key: key_model_instance.schema.public_key || "",
           private_key: key_model_instance.schema.public_key || ""
@@ -30,6 +38,7 @@ let key_controller = {
               key_name = req.body.key_name;
         
         const key_model_instance = new key_model();
+        console.log("Storing key with name " + key_name + " in database.");
         key_model_instance.set(null, key_name, req.body.private_key, req.body.public_key, -1, user_id);
         res.end();
     },

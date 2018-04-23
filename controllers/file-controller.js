@@ -26,6 +26,7 @@ let file_controller = {
 
         let returned_id = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_ext, uploaded_file.file_data, uploaded_file.user_id, uploaded_file.file_key);
         
+      console.log("Uploaded file with name " + uploaded_file.file_name);
         if (!returned_id){
             req.flash('error_message', {message: "Something went horribly, horribly wrong. Please don't do that again."});
             res.redirect('/');
