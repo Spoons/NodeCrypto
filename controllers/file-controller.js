@@ -8,31 +8,31 @@ const file_model = require('../models/file_model'),
 
 let file_controller = {
   upload_file: (req, res) => {
-        let in_file = req.files.uploadedFile;
-
-        let file_extension = in_file.name.substr(in_file.name.lastIndexOf('.')+1, in_file.name.length);
+      
+        const file_extension = req.body.file_extension;
+        const file_name = req.body.file_name;
+        const enc_file_data = req.body.enc_file_data;
         const uploaded_file = {
             file_id: null,
-            file_name: in_file.name,
+            file_name: file_name,
             file_ext: file_extension,
-            file_data: in_file.data,
+            file_data: enc_file_data,
             user_id: req.user.schema.id.value,
             file_key: null
         }
-
+        
+        
         let newFileModel = new file_model();
 
-        let returned_id = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_ext, uploaded_file.file_data.toString('hex'), uploaded_file.user_id, uploaded_file.file_key);
-
+        let returned_id = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_ext, uploaded_file.file_data, uploaded_file.user_id, uploaded_file.file_key);
+        
         if (!returned_id){
             req.flash('error_message', {message: "Something went horribly, horribly wrong. Please don't do that again."});
             res.redirect('/');
         }else{
             req.flash('success_message', "File uploaded successfully");
             res.redirect(`/${req.user.schema.id.value}/files/file/${returned_id}`);
-
         }
-
   },
 
   file_route_get : (req,res) => {
@@ -118,7 +118,7 @@ let file_controller = {
     res.setHeader('Content-disposition', 'attachment; filename=' + req.body.file_name);
     res.setHeader('Content-type', mime_type);
 
-    var contents = new Buffer(file_data, "hex");
+    var contents = new Buffer(file_data);
 
     return res.send(200, contents);
   }

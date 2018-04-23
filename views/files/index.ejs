@@ -13,10 +13,7 @@
                     <p>Follow the form below to upload a file to your account</p>
 
                     <form ref='uploadForm'
-                    id='uploadForm'
-                    action='http://localhost:3000/<%= user.schema.id.value %>/files/upload'
-                    method='post'
-                    encType="multipart/form-data">
+                    id='uploadForm'>
                         <input type="file" name="uploadedFile" />
                         <button id="uploadButton" class="btn btn-primary btn-lg btn-success" onclick="keyReq(event, <%= user.schema.id.value %>)">Upload</button>
                     </form>
