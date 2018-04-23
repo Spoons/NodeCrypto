@@ -1,9 +1,10 @@
 'use strict';
 
 // Page constants
-const form = document.querySelector('#uploadForm'),
+const form = document.querySelector('#file_input'),
       base_url = window.location.origin + '/',
-      selected_file = {};
+      selected_file = {},
+      optional_selected_key = document.querySelector('#preferred_key');
 
 // DOM ready
 document.addEventListener("DOMContentLoaded", function() {
@@ -19,6 +20,9 @@ document.addEventListener("DOMContentLoaded", function() {
 // Request key from server to encrypt
 const keyReq = (e, user_id, preferred_key = "") => {
   e.preventDefault();
+  if (optional_selected_key){
+      preferred_key = $('#preferred_key')[0].selectedOptions[0].value;
+  }
   console.log("Currently in keyReq");
   let xhr = new XMLHttpRequest();
   if (preferred_key == ""){
@@ -104,7 +108,7 @@ function upload_file(file_data, user_id, key_pair){
     let query = base_url + user_id + '/files/upload';
     
     // Gather information on file
-    const file_input = form.childNodes[1],
+    const file_input = form,
           file_name_escaped = file_input.value.replace(/\\/g, '/'),
           file_name = file_name_escaped.substr(file_name_escaped.lastIndexOf('/')+1, file_name_escaped.length),
           file_extension = file_name_escaped.substr(file_name_escaped.lastIndexOf('.'), file_name_escaped.length);

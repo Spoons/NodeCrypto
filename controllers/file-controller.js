@@ -4,7 +4,8 @@ const file_model = require('../models/file_model'),
       path = require('path'),
       mime = require('mime'),
       fs = require('fs'),
-      key_model = require('../models/key_model').key_model;
+      key_model = require('../models/key_model').key_model,
+      key_controller = require('./keys-controller').key_controller;
 
 let file_controller = {
   upload_file: (req, res) => {
@@ -26,7 +27,6 @@ let file_controller = {
 
         let returned_id = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_ext, uploaded_file.file_data, uploaded_file.user_id, uploaded_file.file_key);
         
-      console.log("Uploaded file with name " + uploaded_file.file_name);
         if (!returned_id){
             req.flash('error_message', {message: "Something went horribly, horribly wrong. Please don't do that again."});
             res.redirect('/');
@@ -39,7 +39,10 @@ let file_controller = {
   file_route_get : (req,res) => {
       let keyModelInstance = new key_model();
       keyModelInstance.schema.load(1);
-      res.render('files/index', {PUBLIC_KEY: keyModelInstance.schema.return_properties_array().public_key, PRIVATE_KEY: keyModelInstance.schema.return_properties_array().private_key});
+      
+      const key_controller_instance = key_controller;
+      let key_arr = key_controller_instance.get_all_keys_by_user_id(req.user.schema.id.value);
+      res.render('files/index', {PUBLIC_KEY: keyModelInstance.schema.return_properties_array().public_key, PRIVATE_KEY: keyModelInstance.schema.return_properties_array().private_key, all_keys: key_arr});
   },
 
   file_id_get : (req,res) => {

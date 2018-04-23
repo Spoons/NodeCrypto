@@ -11,6 +11,14 @@ let key_controller = {
         const all_keys = key_model_instance.schema.load_multiple(user_id, 'user');
         res.render('users/keys/all_keys', {KEYS: all_keys});
     },
+    
+    get_all_keys_by_user_id: function(user_id){
+        const key_model_instance = new key_model();
+
+        const all_keys = key_model_instance.schema.load_multiple(user_id, 'user');
+        console.log(all_keys);
+        return all_keys;
+    },
 
     get_single_key: function(req,res){
         const user_id = req.user.schema.id.value,

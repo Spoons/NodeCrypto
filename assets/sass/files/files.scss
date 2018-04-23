@@ -34,3 +34,13 @@
         }
     }
 }
+
+.select_group{
+    display: block;
+    width: 100%;
+    #preferred_key {
+        width: 25%;
+        color: black;
+        margin: 1em;
+    }
+}

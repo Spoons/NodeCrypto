@@ -11,10 +11,24 @@
             </div>
                 <div class="jumbotron-body">
                     <p>Follow the form below to upload a file to your account</p>
-
                     <form ref='uploadForm'
                     id='uploadForm'>
-                        <input type="file" name="uploadedFile" />
+                        <input type="file" name="uploadedFile" id="file_input"/>
+                        <% if (all_keys.length != 0){ %>
+                          <div class="select_group">
+                              <label for="preferred_key">Select a key...</label>
+                           <select name="preferred_key" id="preferred_key">
+                           <option value="none">None</option>
+                            <% all_keys.forEach(function(key){ %>
+                                <option value="<%= key.name %>">
+                                    <%= key.name %>
+                                </option>
+                            <% }); %>
+                            </select>
+                           </div>
+                        <% } %>
+                         
+                           
                         <button id="uploadButton" class="btn btn-primary btn-lg btn-success" onclick="keyReq(event, <%= user.schema.id.value %>)">Upload</button>
                         <button id="newUploadButton" class="btn btn-primary btn-lg btn-success" onclick="generate_user_key(event, <%= user.schema.id.value %>)">Upload with New Key</button>
                     </form>
