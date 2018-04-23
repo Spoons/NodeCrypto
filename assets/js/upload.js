@@ -27,16 +27,26 @@ const keyReq = (e, user_id) => {
 
   // Check ready state complete and OK status
   xhr.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      encrypt(xhr.response, user_id);
+    if (this.readyState == 4) {
+        if (this.status == 200){
+            const key_pair = JSON.parse(xhr.response);
+            if (key_pair.public_key.value != null && key_pair.private_key.value != null){
+                encrypt(key_pair, user_id);
+            }else{
+                generate_user_key(e, user_id);
+            }
+        }else{
+            alert("Unable to upload file at this time.");
+            window.location = base_url;
+        } 
     }
   }
 };
 
 // Encrypt function - pauses async to wait for encryption and uploads
-const encrypt = async function(json, user_id) {
-    let public_key = JSON.parse(json).public_key;
-
+const encrypt = async function(key_pair, user_id) {
+    let public_key = key_pair.public_key.value;
+    
     if (!selected_file.data instanceof ArrayBuffer) {
         console.log("malformed data");
         alert('File could not be uploaded at this time.');
@@ -52,7 +62,7 @@ const encrypt = async function(json, user_id) {
             return encrypted;
         });
         
-        upload_file(result, user_id);
+        upload_file(result, user_id, key_pair);
     }
 };
 
@@ -63,8 +73,8 @@ function readerReady(e){
 }
 
 // Builds form data and submits XMLHttpRequest POST to server
-function upload_file(file_data, user_id){
-    const query = base_url + user_id + '/files/upload';
+function upload_file(file_data, user_id, key_pair){
+    let query = base_url + user_id + '/files/upload';
     
     // Gather information on file
     const file_input = form.childNodes[1],
@@ -83,6 +93,58 @@ function upload_file(file_data, user_id){
     xhr.open("POST", query);
     xhr.send(form_data);
     
+     // XMLHttpRequest POST associate file to key
+//    const link_data = {
+//        key_pair: key_pair,
+//        file_data: file_data
+//    }
+//    query = base_url + user_id + '/files/associate';
+//    const xhrLink = new XMLHttpRequest();
+//    xhrLink.open("POST", query);
+//    xhrLink.setRequestHeader("Content-Type", "application/json");
+//    xhrLink.send(JSON.stringify(link_data));
+    
     alert("File uploaded successfully.");
     window.location = base_url + user_id + '/files/files';
 };
+
+// Generates a new user key if none are available
+const generate_user_key = async function(event_data, user_id){
+    // Prompt user for passphrase
+    const passphrase = prompt("You currently have no keys associated with your account. Please enter a passphrase to generate a new key before uploading.");
+    const key_name = prompt("Please enter a name for this key.");
+    
+    // Set up options for keygen
+    var options = {
+        userIds: [{ id:user_id}],
+        numBits: 4096,
+        passphrase: passphrase
+    };
+    
+    // Create new key pair
+    let key_pair = await openpgp.generateKey(options).then(function(key) {
+        const key_pair = {
+            private_key: key.privateKeyArmored,
+            public_key: key.publicKeyArmored,
+            key_name: key_name
+        }
+        
+        return key_pair;
+    });
+    
+    store_user_keys(key_pair, user_id, event_data);
+}
+
+// POSTs the key generated to the server to store with the user data
+function store_user_keys(key_pair, user_id, event_data){
+    const query = base_url + user_id + '/keys/store';
+        
+    // XMLHttpRequest POST user keys
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", query);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(JSON.stringify(key_pair));
+    
+    // Encrypt with newely stored keys
+    // keyReq(event_data, user_id);
+}

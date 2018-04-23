@@ -1,5 +1,6 @@
 const key_model = require('../models/key_model').key_model,
-      user_controller = require('./user-controller').user_controller,
+      file_controller = require('./user-controller').file_controller,
+      keys_controller = require('./user-controller').keys_controller,
       openPGP = require('openpgp');
 
 let key_controller = {
@@ -17,27 +18,34 @@ let key_controller = {
 
         key_model_instance.schema.load(user_id, 'user');
         let jsonObj = {
-          public_key: key_model_instance.schema.public_key.value
+          public_key: key_model_instance.schema.public_key || "",
+          private_key: key_model_instance.schema.public_key || ""
         }
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify(jsonObj));
     },
-
-    generate_key: function(req,res){
-        console.log("Hit the function!");
-        const passphrase = req.params.phrase;
-        const options = {
-            data: new Uint8Array([0x01, 0x01, 0x01]), // input as Uint8Array (or String)
-            passwords: [passphrase],              // multiple passwords possible
-            armor: false                              // don't ASCII armor (for Uint8Array output)
-        };
-        let encrypted = 'cats';
-
-        openPGP.encrypt(options).then(function(ciphertext) {
-            encrypted = ciphertext.message.packets.write(); // get raw encrypted packets as Uint8Array
-        });
-
-        console.log(encrypted);
+    
+    store_keys: function(req,res){
+        const user_id = req.user.schema.id.value,
+              key_name = req.body.key_name;
+        
+        const key_model_instance = new key_model();
+        key_model_instance.set(null, key_name, req.body.private_key, req.body.public_key, -1, user_id);
+        res.end();
+    },
+    
+    update_file_key: (req,res) => {
+//        const key_pair = req.body.link_data.key_pair,
+//              file_data = req.body.link_data.file_data,
+//              key_model_instance = new key_model();
+//        
+//        const key_model_instance = new key_model(),
+//              file_controller_instance = new file_controller();
+//        
+//        key_model_instance.schema.load(key_pair.private_key, 'private_key');
+//        const file_id = file_controller_instance.get_file_id_by_data(file_data);
+//        
+//        
     }
 };
 

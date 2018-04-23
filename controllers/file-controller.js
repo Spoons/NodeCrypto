@@ -88,7 +88,7 @@ let file_controller = {
   },
 
   update_file_data: function(file_id, file_data){
-    //TODO: update file with ID with data
+
   },
 
   delete_file: function(file_id){
@@ -121,6 +121,12 @@ let file_controller = {
     var contents = new Buffer(file_data);
 
     return res.send(200, contents);
+  },
+    
+  get_file_id_by_data: (data) => {
+      const file_model_instance = new file_model();
+      file_model_instance.schema.load(data, "data");
+      return file_model_instance.schema.id.value;
   }
 }
 
