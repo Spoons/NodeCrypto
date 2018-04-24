@@ -8,7 +8,7 @@
                 <div class="jumbotron-body">
                     <ul>
                         <li class="name">Name: <%= file_info.file_name %></li>
-                        <li class="name">Extension: <%= file_info.file_ext %></li>
+                        <li class="name">Encrypted Extension: <%= file_info.file_ext %></li>
                         <li class="data">File size: Approx <%= Math.round(file_info.file_data.length / 1024) %>KB</li>
                     </ul>
 
@@ -16,7 +16,16 @@
                         <input type="hidden" name="file_name" value="<%= file_info.file_name %>">
                         <input type="hidden" name="file_data" value="<%= file_info.file_data %>">
                         <input type="hidden" name="file_ext" value="<%= file_info.file_ext %>">
-                        <button type="submit" class="btn btn-success btn-lg">Download</button>
+                        <input type="hidden" name="file_id" value="<%= file_info.file_id %>">
+                        <button type="submit" class="btn btn-success btn-lg">Download Encrypted</button>
+                    </form>
+                    
+                    <form action="/<%= user.schema.id.value %>/files/file/<%= file_info.file_id %>/download/raw" method="POST">
+                        <input type="hidden" name="file_name" value="<%= file_info.file_name %>">
+                        <input type="hidden" name="file_data" value="<%= file_info.file_data %>">
+                        <input type="hidden" name="file_ext" value="<%= file_info.file_ext %>">
+                        <input type="hidden" name="file_id" value="<%= file_info.file_id %>">
+                        <button type="submit" class="btn btn-success btn-lg">Download Raw</button>
                     </form>
                 </div>
             </div>

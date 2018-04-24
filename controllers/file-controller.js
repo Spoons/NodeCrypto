@@ -5,7 +5,8 @@ const file_model = require('../models/file_model'),
       mime = require('mime'),
       fs = require('fs'),
       key_model = require('../models/key_model').key_model,
-      key_controller = require('./keys-controller').key_controller;
+      key_controller = require('./keys-controller').key_controller,
+      openpgp = require('openpgp');
 
 let file_controller = {
   upload_file: (req, res) => {
@@ -115,11 +116,36 @@ let file_controller = {
   },
 
   file_download: (req,res) => {
-    let file_data = req.body.file_data;
+    let file_data = req.body.file_data,
+        file_ext = req.body.file_ext,
+        file_name = req.body.file_name;  
 
     let mime_type = (file_data.file_ext == "txt" ? "text/plain" : "application/octet-stream");
 
-    res.setHeader('Content-disposition', 'attachment; filename=' + req.body.file_name);
+    res.setHeader('Content-disposition', 'attachment; filename=' + file_name);
+    res.setHeader('Content-type', mime_type);
+
+    var contents = new Buffer(file_data);
+
+    return res.send(200, contents);
+  },
+    
+  file_download_raw: (req,res) => {
+    let file_data = req.body.file_data,
+        file_ext = req.body.file_ext,
+        file_name = req.body.file_name,
+        file_id = req.body.file_id;  
+
+    let mime_type = (file_data.file_ext == "txt" ? "text/plain" : "application/octet-stream");
+      
+    //TODO: After key-file association: 
+      /*
+      * 1) Find key associated with this file ID
+      * 2) use key to decrypt file
+      * 3) pass back decrypted file
+      */
+
+    res.setHeader('Content-disposition', 'attachment; filename=' + file_name);
     res.setHeader('Content-type', mime_type);
 
     var contents = new Buffer(file_data);
