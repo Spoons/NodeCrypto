@@ -10,6 +10,7 @@ const form = document.querySelector('#file_input'),
 document.addEventListener("DOMContentLoaded", function() {
   //  Form event listener, gather file data
   form.addEventListener('change', function(event) {
+    selected_file = {};
     const fileData = event.target.files[0];
     let fileReader = new FileReader();
     fileReader.onloadend = readerReady;
@@ -22,7 +23,7 @@ const keyReq = (e, user_id, preferred_key = "") => {
   e.preventDefault();
     
   // Prevent user from attempting to upload without selecting file data first.
-  if (!selected_file.data){
+  if (!selected_file.data || selected_file.data.length == 0){
       alert("Please select a file before attempting to upload.");
   }else{  
     if (optional_selected_key){
@@ -146,7 +147,7 @@ function upload_file(file_data, user_id, key_pair){
 
 // Generates a new user key if none are available
 const generate_user_key = async function(event_data, user_id){
-    if (!selected_file.data){
+    if (!selected_file.data || selected_file.data.length == 0){
       alert("Please select a file before attempting to upload.");
     }else{ 
         console.log("Generating user key pair...");
