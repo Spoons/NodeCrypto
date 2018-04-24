@@ -7,7 +7,8 @@ const express = require('express'),
 
 
 router.get('/all_keys', keysController.get_all_keys);
-router.get('/single_key', keysController.get_single_key);
-router.get('/generate/:phrase', keysController.generate_key);
+router.get('/single_key/:pref_key', keysController.get_single_key);
+router.post('/store', keysController.store_keys);
+router.use('/associate', keysController.update_file_key);
 
 module.exports = router;
