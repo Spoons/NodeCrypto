@@ -115,7 +115,7 @@ function upload_file(file_data, user_id, key_pair){
     // Gather information on file
     const file_input = form,
           file_name_escaped = file_input.value.replace(/\\/g, '/'),
-          file_name = file_name_escaped.substr(file_name_escaped.lastIndexOf('/')+1, file_name_escaped.length),
+          file_name = file_name_escaped.substr(file_name_escaped.lastIndexOf('/')+1, file_name_escaped.length) + ".gpg",
           file_extension = file_name_escaped.substr(file_name_escaped.lastIndexOf('.'), file_name_escaped.length) + ".gpg";
     
     // Create new FormData object
