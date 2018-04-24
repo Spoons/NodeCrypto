@@ -115,11 +115,17 @@ let file_controller = {
   },
 
   file_download: (req,res) => {
-    let file_data = req.body.file_data;
+    let file_data = req.body.file_data,
+        file_ext = req.body.file_ext,
+        file_name = req.body.file_name;  
+      
+    if (file_ext.substr(file_ext.lastIndexOf('.'), file_ext.length) == '.gpg'){
+        file_name += ".gpg";
+    }
 
     let mime_type = (file_data.file_ext == "txt" ? "text/plain" : "application/octet-stream");
 
-    res.setHeader('Content-disposition', 'attachment; filename=' + req.body.file_name);
+    res.setHeader('Content-disposition', 'attachment; filename=' + file_name);
     res.setHeader('Content-type', mime_type);
 
     var contents = new Buffer(file_data);
