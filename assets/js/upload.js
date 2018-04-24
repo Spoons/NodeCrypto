@@ -20,38 +20,21 @@ document.addEventListener("DOMContentLoaded", function() {
 // Request key from server to encrypt
 const keyReq = (e, user_id, preferred_key = "") => {
   e.preventDefault();
-  if (optional_selected_key){
-      preferred_key = $('#preferred_key')[0].selectedOptions[0].value;
-  }
-  console.log("Currently in keyReq");
-  let xhr = new XMLHttpRequest();
-  if (preferred_key == ""){
-      let query = base_url + user_id + '/keys/single_key/none'
-      xhr.open("GET", query, true);
-      xhr.send();
-      
-       // Check ready state complete and OK status
-      xhr.onreadystatechange = function() {
-        if (this.readyState == 4) {
-            if (this.status == 200){
-
-                const key_pair = JSON.parse(xhr.response);
-                if (key_pair.public_key.value != null && key_pair.private_key.value != null){
-                    encrypt(key_pair, user_id);
-                }else{
-                    generate_user_key(e, user_id);
-                }
-            }else{
-                alert("Unable to upload file at this time.");
-                window.location = base_url;
-            } 
-        }
+    
+  // Prevent user from attempting to upload without selecting file data first.
+  if (!selected_file.data){
+      alert("Please select a file before attempting to upload.");
+  }else{  
+    if (optional_selected_key){
+          preferred_key = $('#preferred_key')[0].selectedOptions[0].value;
       }
-  }else{
-      let query = base_url + user_id + '/keys/single_key/' + preferred_key;
-      const xhr = new XMLHttpRequest();
-      xhr.open("GET", query, true);
-      xhr.send();
+      console.log("Processing request...");
+      let xhr = new XMLHttpRequest();
+      if (preferred_key == ""){
+          let query = base_url + user_id + '/keys/single_key/none'
+          xhr.open("GET", query, true);
+          xhr.send();
+
            // Check ready state complete and OK status
           xhr.onreadystatechange = function() {
             if (this.readyState == 4) {
@@ -69,12 +52,35 @@ const keyReq = (e, user_id, preferred_key = "") => {
                 } 
             }
           }
-      }
+      }else{
+          let query = base_url + user_id + '/keys/single_key/' + preferred_key;
+          const xhr = new XMLHttpRequest();
+          xhr.open("GET", query, true);
+          xhr.send();
+               // Check ready state complete and OK status
+              xhr.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                    if (this.status == 200){
+
+                        const key_pair = JSON.parse(xhr.response);
+                        if (key_pair.public_key.value != null && key_pair.private_key.value != null){
+                            encrypt(key_pair, user_id);
+                        }else{
+                            generate_user_key(e, user_id);
+                        }
+                    }else{
+                        alert("Unable to upload file at this time.");
+                        window.location = base_url;
+                    } 
+                }
+              }
+      }   
+  }
 };
 
 // Encrypt function - pauses async to wait for encryption and uploads
 const encrypt = async function(key_pair, user_id) {
-    console.log("Currently in encrypt");
+    console.log("Encrypting...");
     let public_key = key_pair.public_key.value;
     
     if (!selected_file.data instanceof ArrayBuffer) {
@@ -97,14 +103,13 @@ const encrypt = async function(key_pair, user_id) {
 };
 
 // Set file data when file reader finishes parsing data
-function readerReady(e){
-  
+function readerReady(e){ 
   selected_file.data= e.target.result;
 }
 
 // Builds form data and submits XMLHttpRequest POST to server
 function upload_file(file_data, user_id, key_pair){
-    console.log("Currently in upload_file");
+    console.log("Uploading...");
     let query = base_url + user_id + '/files/upload';
     
     // Gather information on file
@@ -141,36 +146,40 @@ function upload_file(file_data, user_id, key_pair){
 
 // Generates a new user key if none are available
 const generate_user_key = async function(event_data, user_id){
-    console.log("Currently in generate_user_key");
-    event_data.preventDefault();
-    // Prompt user for passphrase
-    const passphrase = prompt("Please enter a passphrase to generate a key.");
-    const key_name = prompt("Please enter a name for this key.");
-    
-    // Set up options for keygen
-    var options = {
-        userIds: [{ id:user_id}],
-        numBits: 2048,
-        passphrase: passphrase
-    };
-    
-    // Create new key pair
-    let key_pair = await openpgp.generateKey(options).then(function(key) {
-        const key_pair = {
-            private_key: key.privateKeyArmored,
-            public_key: key.publicKeyArmored,
-            key_name: key_name
-        }
-        
-        return key_pair;
-    });
-    
-    store_user_keys(key_pair, user_id, event_data);
+    if (!selected_file.data){
+      alert("Please select a file before attempting to upload.");
+    }else{ 
+        console.log("Generating user key pair...");
+        event_data.preventDefault();
+        // Prompt user for passphrase
+        const passphrase = prompt("Please enter a passphrase to generate a key.");
+        const key_name = prompt("Please enter a name for this key.");
+
+        // Set up options for keygen
+        var options = {
+            userIds: [{ id:user_id}],
+            numBits: 2048,
+            passphrase: passphrase
+        };
+
+        // Create new key pair
+        let key_pair = await openpgp.generateKey(options).then(function(key) {
+            const key_pair = {
+                private_key: key.privateKeyArmored,
+                public_key: key.publicKeyArmored,
+                key_name: key_name
+            }
+
+            return key_pair;
+        });
+
+        store_user_keys(key_pair, user_id, event_data);
+    }
 }
 
 // POSTs the key generated to the server to store with the user data
 function store_user_keys(key_pair, user_id, event_data){
-    console.log("Currently in store_user_keys");
+    console.log("Storing key pair...");
     const query = base_url + user_id + '/keys/store';
         
     // XMLHttpRequest POST user keys
