@@ -24,11 +24,10 @@ let file_controller = {
             key_id: req.body.key_id
         }
 
-        console.log("yoyoyo we are uploading...");
+        console.log("upload begin");
 
         let newFileModel = new file_model();
 
-        console.log("key id: " + uploaded_file.file_key);
         let returned_id = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_ext, uploaded_file.file_data, uploaded_file.user_id, uploaded_file.key_id);
 
         if (!returned_id){

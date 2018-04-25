@@ -16,7 +16,7 @@ let key_controller = {
         const key_model_instance = new key_model();
 
         const all_keys = key_model_instance.schema.load_multiple(user_id, 'user');
-        console.log(all_keys);
+        //console.log(all_keys);
         return all_keys;
     },
 
@@ -54,7 +54,7 @@ let key_controller = {
           key_id: key_model_instance.schema.id.value
         }
         res.setHeader("Content-Type", "application/json");
-        console.log(keyObj);
+        //console.log(keyObj);
         res.send(JSON.stringify(keyObj));
 
     },

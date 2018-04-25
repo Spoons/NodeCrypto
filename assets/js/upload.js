@@ -85,7 +85,7 @@ const keyReq = (e, user_id, preferred_key = "") => {
 const encrypt = async function(key_pair, user_id) {
     console.log("Encrypting...");
     let public_key = key_pair.public_key;
-    console.log(key_pair);
+    //console.log(key_pair);
     if (!selected_file.data instanceof ArrayBuffer) {
         console.log("malformed data");
         alert('File could not be uploaded at this time.');
@@ -149,6 +149,8 @@ const generate_user_key = async function(event_data, user_id){
         const passphrase = prompt("Please enter a passphrase to generate a key.");
         const key_name = prompt("Please enter a name for this key.");
 
+        console.log("key passphrase: " + passphrase);
+
         // Set up options for keygen
         var options = {
             userIds: [{ id:user_id}],
@@ -186,7 +188,7 @@ function store_user_keys(key_pair, user_id, event_data){
       if (this.readyState == 4) {
           if (this.status == 200){
             keyResponse = JSON.parse(xhr.response);
-            console.log(keyResponse);
+            //console.log("key id at store_user_keys" + keyResponse);
             key_pair.key_id = keyResponse;
             // Encrypt with newely stored keys
             keyReq(event_data, user_id, key_pair.key_name);
