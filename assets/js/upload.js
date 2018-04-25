@@ -2,9 +2,10 @@
 
 // Page constants
 const form = document.querySelector('#file_input'),
-      base_url = window.location.origin + '/',
-      selected_file = {},
-      optional_selected_key = document.querySelector('#preferred_key');
+      base_url = window.location.origin + '/';
+
+let optional_selected_key = document.querySelector('#preferred_key'),
+    selected_file = {};
 
 // DOM ready
 document.addEventListener("DOMContentLoaded", function() {
