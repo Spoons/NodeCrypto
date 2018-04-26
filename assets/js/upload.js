@@ -5,7 +5,8 @@ const form = document.querySelector('#file_input'),
       base_url = window.location.origin + '/';
 
 let optional_selected_key = document.querySelector('#preferred_key'),
-    selected_file = {};
+    selected_file = {},
+    generated_key = -1;
 
 // DOM ready
 document.addEventListener("DOMContentLoaded", function() {
@@ -22,11 +23,11 @@ document.addEventListener("DOMContentLoaded", function() {
 // Request key from server to encrypt
 const keyReq = (e, user_id, preferred_key = "") => {
   e.preventDefault();
-    
+
   // Prevent user from attempting to upload without selecting file data first.
   if (!selected_file.data || selected_file.data.length == 0){
       alert("Please select a file before attempting to upload.");
-  }else{  
+  }else{
     if (optional_selected_key){
           preferred_key = $('#preferred_key')[0].selectedOptions[0].value;
       }
@@ -43,7 +44,7 @@ const keyReq = (e, user_id, preferred_key = "") => {
                 if (this.status == 200){
 
                     const key_pair = JSON.parse(xhr.response);
-                    if (key_pair.public_key.value != null && key_pair.private_key.value != null){
+                    if (key_pair.public_key != null){
                         encrypt(key_pair, user_id);
                     }else{
                         generate_user_key(e, user_id);
@@ -51,7 +52,7 @@ const keyReq = (e, user_id, preferred_key = "") => {
                 }else{
                     alert("Unable to upload file at this time.");
                     window.location = base_url;
-                } 
+                }
             }
           }
       }else{
@@ -65,7 +66,7 @@ const keyReq = (e, user_id, preferred_key = "") => {
                     if (this.status == 200){
 
                         const key_pair = JSON.parse(xhr.response);
-                        if (key_pair.public_key.value != null && key_pair.private_key.value != null){
+                        if (key_pair.public_key != null){
                             encrypt(key_pair, user_id);
                         }else{
                             generate_user_key(e, user_id);
@@ -73,18 +74,18 @@ const keyReq = (e, user_id, preferred_key = "") => {
                     }else{
                         alert("Unable to upload file at this time.");
                         window.location = base_url;
-                    } 
+                    }
                 }
               }
-      }   
+      }
   }
 };
 
 // Encrypt function - pauses async to wait for encryption and uploads
 const encrypt = async function(key_pair, user_id) {
     console.log("Encrypting...");
-    let public_key = key_pair.public_key.value;
-    
+    let public_key = key_pair.public_key;
+    //console.log(key_pair);
     if (!selected_file.data instanceof ArrayBuffer) {
         console.log("malformed data");
         alert('File could not be uploaded at this time.');
@@ -99,13 +100,13 @@ const encrypt = async function(key_pair, user_id) {
             let encrypted = ciphertext.data;
             return encrypted;
         });
-        
+
         upload_file(result, user_id, key_pair);
     }
 };
 
 // Set file data when file reader finishes parsing data
-function readerReady(e){ 
+function readerReady(e){
   selected_file.data= e.target.result;
 }
 
@@ -113,35 +114,26 @@ function readerReady(e){
 function upload_file(file_data, user_id, key_pair){
     console.log("Uploading...");
     let query = base_url + user_id + '/files/upload';
-    
+
     // Gather information on file
     const file_input = form,
           file_name_escaped = file_input.value.replace(/\\/g, '/'),
           file_name = file_name_escaped.substr(file_name_escaped.lastIndexOf('/')+1, file_name_escaped.length) + ".gpg",
           file_extension = file_name_escaped.substr(file_name_escaped.lastIndexOf('.'), file_name_escaped.length) + ".gpg";
-    
+
     // Create new FormData object
     const form_data = new FormData();
     form_data.append('file_name', file_name);
     form_data.append('file_extension', file_extension);
     form_data.append('enc_file_data', file_data);
-    
+    form_data.append('key_id', key_pair.key_id);
+    //form_data.append('key_id', )
+
     // XMLHttpRequest POST form data
     const xhr = new XMLHttpRequest();
     xhr.open("POST", query);
     xhr.send(form_data);
-    
-     // XMLHttpRequest POST associate file to key
-//    const link_data = {
-//        key_pair: key_pair,
-//        file_data: file_data
-//    }
-//    query = base_url + user_id + '/files/associate';
-//    const xhrLink = new XMLHttpRequest();
-//    xhrLink.open("POST", query);
-//    xhrLink.setRequestHeader("Content-Type", "application/json");
-//    xhrLink.send(JSON.stringify(link_data));
-    
+
     alert("File uploaded successfully.");
     window.location = base_url + user_id + '/files/files';
 };
@@ -150,12 +142,14 @@ function upload_file(file_data, user_id, key_pair){
 const generate_user_key = async function(event_data, user_id){
     if (!selected_file.data || selected_file.data.length == 0){
       alert("Please select a file before attempting to upload.");
-    }else{ 
+    }else{
         console.log("Generating user key pair...");
         event_data.preventDefault();
         // Prompt user for passphrase
         const passphrase = prompt("Please enter a passphrase to generate a key.");
         const key_name = prompt("Please enter a name for this key.");
+
+        console.log("key passphrase: " + passphrase);
 
         // Set up options for keygen
         var options = {
@@ -183,13 +177,24 @@ const generate_user_key = async function(event_data, user_id){
 function store_user_keys(key_pair, user_id, event_data){
     console.log("Storing key pair...");
     const query = base_url + user_id + '/keys/store';
-        
+
     // XMLHttpRequest POST user keys
     const xhr = new XMLHttpRequest();
     xhr.open("POST", query);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(JSON.stringify(key_pair));
-    
-    // Encrypt with newely stored keys
-    keyReq(event_data, user_id, key_pair.key_name);
+    let keyResponse = {};
+    xhr.onreadystatechange = function(){
+      if (this.readyState == 4) {
+          if (this.status == 200){
+            keyResponse = JSON.parse(xhr.response);
+            //console.log("key id at store_user_keys" + keyResponse);
+            key_pair.key_id = keyResponse;
+            // Encrypt with newely stored keys
+            keyReq(event_data, user_id, key_pair.key_name);
+        }
+      }
+
+    }
+
 }

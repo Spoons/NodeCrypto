@@ -10,24 +10,26 @@ const file_model = require('../models/file_model'),
 
 let file_controller = {
   upload_file: (req, res) => {
-      
+
         const file_extension = req.body.file_extension;
         const file_name = req.body.file_name;
         const enc_file_data = req.body.enc_file_data;
+        const key_id = req.body.key_id;
         const uploaded_file = {
             file_id: null,
             file_name: file_name,
             file_ext: file_extension,
             file_data: enc_file_data,
             user_id: req.user.schema.id.value,
-            file_key: null
+            key_id: req.body.key_id
         }
-        
-        
+
+        console.log("upload begin");
+
         let newFileModel = new file_model();
 
-        let returned_id = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_ext, uploaded_file.file_data, uploaded_file.user_id, uploaded_file.file_key);
-        
+        let returned_id = newFileModel.set(uploaded_file.file_id, uploaded_file.file_name, uploaded_file.file_ext, uploaded_file.file_data, uploaded_file.user_id, uploaded_file.key_id);
+
         if (!returned_id){
             req.flash('error_message', {message: "Something went horribly, horribly wrong. Please don't do that again."});
             res.redirect('/');
@@ -40,7 +42,7 @@ let file_controller = {
   file_route_get : (req,res) => {
       let keyModelInstance = new key_model();
       keyModelInstance.schema.load(1);
-      
+
       const key_controller_instance = key_controller;
       let key_arr = key_controller_instance.get_all_keys_by_user_id(req.user.schema.id.value);
       res.render('files/index', {PUBLIC_KEY: keyModelInstance.schema.return_properties_array().public_key, PRIVATE_KEY: keyModelInstance.schema.return_properties_array().private_key, all_keys: key_arr});
@@ -118,7 +120,7 @@ let file_controller = {
   file_download: (req,res) => {
     let file_data = req.body.file_data,
         file_ext = req.body.file_ext,
-        file_name = req.body.file_name;  
+        file_name = req.body.file_name;
 
     let mime_type = (file_data.file_ext == "txt" ? "text/plain" : "application/octet-stream");
 
@@ -129,16 +131,16 @@ let file_controller = {
 
     return res.send(200, contents);
   },
-    
+
   file_download_raw: (req,res) => {
     let file_data = req.body.file_data,
         file_ext = req.body.file_ext,
         file_name = req.body.file_name,
-        file_id = req.body.file_id;  
+        file_id = req.body.file_id;
 
     let mime_type = (file_data.file_ext == "txt" ? "text/plain" : "application/octet-stream");
-      
-    //TODO: After key-file association: 
+
+    //TODO: After key-file association:
       /*
       * 1) Find key associated with this file ID
       * 2) use key to decrypt file
@@ -152,7 +154,7 @@ let file_controller = {
 
     return res.send(200, contents);
   },
-    
+
   get_file_id_by_data: (data) => {
       const file_model_instance = new file_model();
       file_model_instance.schema.load(data, "data");
