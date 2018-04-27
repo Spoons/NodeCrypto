@@ -81,7 +81,6 @@ let key_model = function() {
 }
 key_model.sanity = function() {
     const test_model = new key_model();
-    test_model.schema.drop_table();
     test_model.schema.create_table();
 
 // key_model.set: (id: any, name: any, private_key: any, public_key: any, file: any, user: any) => any
