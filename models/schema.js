@@ -17,8 +17,7 @@ const schema = {
     create_table: function() {
         let properties = this.get_schema_properties();
 
-        db.prepare(`DROP TABLE IF EXISTS ${this.get_table_name()}`).run();
-        let table_create_query = `CREATE TABLE ${this.get_table_name()} (`;
+        let table_create_query = `CREATE TABLE IF NOT EXISTS ${this.get_table_name()} (`;
         properties.forEach(function(prop){
             table_create_query += prop.column_name +" "+ prop.db_type + ", ";
 
@@ -55,7 +54,7 @@ const schema = {
         query += values + ")";
         query = query.substring(0, query.length-3);
         query += ");";
-        
+
         let last_id = db.prepare(query).run().lastInsertROWID;
         this.id.value = last_id;
         return last_id;

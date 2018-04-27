@@ -37,7 +37,7 @@ let user_model = function() {
     //      db_foreign_column: "id",
     //      column_name: "key",
     //      value: null,
-    //  } 
+    //  }
     },
 
     this.schema = Object.assign(this.schema, schema_p);
@@ -63,7 +63,6 @@ let user_model = function() {
 }
 user_model.sanity = function() {
     let test_model = new user_model();
-    test_model.schema.drop_table();
     test_model.schema.create_table();
 
     test_model.set("1", "rick2", "crisis", "1");

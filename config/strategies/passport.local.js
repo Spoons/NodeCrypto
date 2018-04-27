@@ -15,8 +15,8 @@ module.exports = (user_model, user_controller) => {
             }else{
                 // User found, compare passwords
                 // Put in user model?
-                console.log("INFO RECEIVED:\n\tUsername:\t"+username+"\n\tPassword:\t"+password);
-                user_controller.password_compare(password, user_login.password.value, function(err, isMatch){             
+                //console.log("INFO RECEIVED:\n\tUsername:\t"+username+"\n\tPassword:\t"+password);
+                user_controller.password_compare(password, user_login.password.value, function(err, isMatch){
                     if (err){
                         console.log("Error encountered: " + err);
                     }else{
@@ -25,7 +25,7 @@ module.exports = (user_model, user_controller) => {
                         }else{
                             return done(null, false, {message: 'Password does not match.'});
                         }
-                    } 
+                    }
                 });
             }
         }

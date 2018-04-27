@@ -21,7 +21,9 @@ const express = require('express'),
       usersPath = require('./routes/users/user'),
       errorPath_NOT_FOUND = require('./routes/error'),
       passport = require('passport'),
-      middleware = require('./middleware/mw');
+      middleware = require('./middleware/mw'),
+      fs = require('fs'),
+      redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
 
 // App setup
 const app = express();
@@ -73,10 +75,34 @@ app.use('/users', usersPath);
 app.use('/:userID/keys', middleware.isAuthenticated, middleware.isAuthenticatedByID, keysPath);
 app.use('*', errorPath_NOT_FOUND);
 
+let USE_SSL = true;
+if (USE_SSL) {
+  var key = fs.readFileSync('keys/nodecrypto.pw.key');
+  var cert = fs.readFileSync( 'keys/nodecrypto.pw.crt' );
+  var ca = fs.readFileSync( 'keys/nodecrypto.pw.csr' );
+
+  var ssl_options = {
+    key: key,
+    cert: cert,
+    ca: ca
+  };
+}
+
+
+/*(httpApp.set('port', process.env.PORT || 3001);
+httpApp.get("*", function (req, res, next) {
+    res.redirect("https://" + req.headers.host + req.url);
+});
+*/
 
 // Server setup & Listen
-const server = http.createServer(app);
-const port = process.env.PORT || 3000;
+const https = require('https');
+if (USE_SSL) {
+  var ssl_server = https.createServer(ssl_options, app);
+  ssl_server.listen(process.env.PORT || 3000);
+}
 
-server.listen(port, (data) => {
-});
+var httpApp = express();
+httpApp.use(redirectToHTTPS());
+const server = http.createServer(httpApp);
+server.listen(3001);
