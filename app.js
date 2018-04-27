@@ -32,7 +32,9 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser({limit: '50mb'}));
 app.use(cookieParser());
 app.use(express.static(__dirname + '/dist'));
-app.use(fileUpload());
+app.use(fileUpload({
+  limits: { fieldSize: 50 * 1024 * 1024 },
+}));
 app.set('view engine','ejs');
 
 // Auth setup - session / validator
