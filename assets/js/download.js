@@ -16,7 +16,8 @@ const unencrypt = function(e, user_id){
 
   xhr.onloadend = function(){
     let retrieved_data = JSON.parse(xhr.response),
-        key_id = retrieved_data.key_id;
+        key_id = retrieved_data.key_id,
+        file_name = retrieved_data.file_name;
 
     let xhrKey = new XMLHttpRequest();
     query = `${window.location.origin}/${user_id}/keys/key/${key_id}/retrieve`;
@@ -32,14 +33,25 @@ const unencrypt = function(e, user_id){
 
       let options = {
         message: openpgp.message.readArmored(retrieved_data.file_data),
-        privateKeys: [privKeyObj]
+        privateKeys: [privKeyObj],
+        format: 'binary'
       };
 
       let decrypted = await openpgp.decrypt(options).then(function(plaintext) {
         return plaintext.data;
       });
 
-      console.log(decrypted);
+
+
+      let fileBlob = new Blob([decrypted]),
+          linkToFile = document.createElement('a'),
+          accurate_file_name = file_name.substr(0, file_name.length - 4);
+
+      console.log(accurate_file_name);
+
+      linkToFile.href = window.URL.createObjectURL(fileBlob);
+      linkToFile.download = accurate_file_name;
+      linkToFile.click();
     }
   }
 }

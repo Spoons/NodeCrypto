@@ -83,7 +83,8 @@ let file_controller = {
         if (file_model_instance.schema.data){
               const file_and_key_data = {
                   file_data: file_model_instance.schema.data.value,
-                  key_id: file_model_instance.schema.key.value
+                  key_id: file_model_instance.schema.key.value,
+                  file_name: file_model_instance.schema.name.value
               }
               res.send(JSON.stringify(file_and_key_data));
         }else{
