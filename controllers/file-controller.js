@@ -24,7 +24,7 @@ let file_controller = {
             key_id: req.body.key_id
         }
 
-        console.log("upload begin");
+        console.log("file recieved");
 
         let newFileModel = new file_model();
 
@@ -51,16 +51,17 @@ let file_controller = {
   file_id_get : (req,res) => {
       const fileId = req.params.id;
       const file_model_instance = new file_model();
-
       if (fileId){
           file_model_instance.schema.load(fileId);
           if (file_model_instance.schema.data){
+                console.log(file_model_instance.schema.data.value.length);
                 const schema_data = {
                     file_name: file_model_instance.schema.name.value,
                     file_ext: file_model_instance.schema.extension.value,
-                    file_data: file_model_instance.schema.data.value,
+                    // file_data: file_model_instance.schema.data.value,
                     file_id: file_model_instance.schema.id.value,
-                    uploader_id: file_model_instance.schema.user.value
+                    uploader_id: file_model_instance.schema.user.value,
+                    file_size: (file_model_instance.schema.data.value.length / 1024)
                 }
                 res.render('files/file_info', {file_info: schema_data});
 
@@ -72,6 +73,28 @@ let file_controller = {
           req.flash('error_message', {message: "Unable to obtain file ID"});
           res.render('/files/');
       }
+  },
+
+  get_file_information: function(req, res){
+    const fileId = req.params.id;
+    const file_model_instance = new file_model();
+    if (fileId){
+        file_model_instance.schema.load(fileId);
+        if (file_model_instance.schema.data){
+              const file_and_key_data = {
+                  file_data: file_model_instance.schema.data.value,
+                  key_id: file_model_instance.schema.key.value,
+                  file_name: file_model_instance.schema.name.value
+              }
+              res.send(JSON.stringify(file_and_key_data));
+        }else{
+            req.flash('error_message', {message: "Something went wrong, please try again."});
+            res.send("Err: No data for file found");
+        }
+    }else{
+        req.flash('error_message', {message: "Unable to obtain file ID"});
+        res.render("Err: Invalid file ID");
+    }
   },
 
   file_transfer_get : (req,res) => {
@@ -118,40 +141,18 @@ let file_controller = {
   },
 
   file_download: (req,res) => {
-    let file_data = req.body.file_data,
-        file_ext = req.body.file_ext,
-        file_name = req.body.file_name;
-
-    let mime_type = (file_data.file_ext == "txt" ? "text/plain" : "application/octet-stream");
-
-    res.setHeader('Content-disposition', 'attachment; filename=' + file_name);
-    res.setHeader('Content-type', mime_type);
-
-    var contents = new Buffer(file_data);
-
-    return res.send(200, contents);
-  },
-
-  file_download_raw: (req,res) => {
-    let file_data = req.body.file_data,
-        file_ext = req.body.file_ext,
+    let file_ext = req.body.file_ext,
         file_name = req.body.file_name,
-        file_id = req.body.file_id;
+        file_id = req.body.file_id,
+        file_model_instance = new file_model();
 
-    let mime_type = (file_data.file_ext == "txt" ? "text/plain" : "application/octet-stream");
+    file_model_instance.schema.load(file_id);
+    let file_data = file_model_instance.schema.data.value;
 
-    //TODO: After key-file association:
-      /*
-      * 1) Find key associated with this file ID
-      * 2) use key to decrypt file
-      * 3) pass back decrypted file
-      */
-
+    let mime_type = "application/octet-stream";
     res.setHeader('Content-disposition', 'attachment; filename=' + file_name);
     res.setHeader('Content-type', mime_type);
-
     var contents = new Buffer(file_data);
-
     return res.send(200, contents);
   },
 

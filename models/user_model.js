@@ -65,24 +65,26 @@ user_model.sanity = function() {
     let test_model = new user_model();
     test_model.schema.create_table();
 
-    test_model.set("1", "rick2", "crisis", "1");
-    let t1 = test_model.to_string();
-    test_model.print();
-
-    const new_model = new user_model();
-
-    new_model.schema.load(1);
-    let t2 = new_model.to_string();
-    new_model.print();
-
-    if (t1 === t2) {
-        console.log("[USER MODEL]: Sanity check pass!\n");
-        return (true);
-    } else {
-        return (false);
-    }
+    // test_model.set("1", "rick2", "crisis", "1");
+    // let t1 = test_model.to_string();
+    // test_model.print();
+    //
+    // const new_model = new user_model();
+    //
+    // new_model.schema.load(1);
+    // let t2 = new_model.to_string();
+    // new_model.print();
+    //
+    // if (t1 === t2) {
+    //     console.log("[USER MODEL]: Sanity check pass!\n");
+    //     return (true);
+    // } else {
+    //     return (false);
+    // }
 }
 
 
-module.exports = user_model;
+
 user_model.sanity();
+
+module.exports = user_model;

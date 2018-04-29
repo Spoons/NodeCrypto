@@ -45,7 +45,7 @@ let file_model = function() {
     },
 
     this.schema = Object.assign(this.schema, schema_p);
-    
+
     this.set = function(id, name, extension, data, user, key) {
         try{
             this.schema.id.value = null;
@@ -58,7 +58,7 @@ let file_model = function() {
             return returned_id;
         }catch(err){
             return null;
-        }   
+        }
     },
     this.to_string = function() {
         let prop = this.schema.get_schema_properties();
@@ -71,28 +71,28 @@ let file_model = function() {
     this.print = function() {
         console.log("====================" + this.to_string() + "====================");
     }
-    
+
 }
 file_model.sanity = function() {
     const test_model = new file_model();
     test_model.schema.create_table();
 
-    test_model.set("1", "cats", "txt", "01010101010", "1", "1");
-    let t1 = test_model.to_string();
-    test_model.print();
-
-    const new_model = new file_model();
-
-    new_model.schema.load(1);
-    let t2 = new_model.to_string();
-    new_model.print();
-
-    if (t1 === t2) {
-        console.log("[FILE MODEL]: Sanity check pass!\n");
-        return (true);
-    } else {
-        return (false);
-    }
+    // test_model.set("1", "cats", "txt", "01010101010", "1", "1");
+    // let t1 = test_model.to_string();
+    // test_model.print();
+    //
+    // const new_model = new file_model();
+    //
+    // new_model.schema.load(1);
+    // let t2 = new_model.to_string();
+    // new_model.print();
+    //
+    // if (t1 === t2) {
+    //     console.log("[FILE MODEL]: Sanity check pass!\n");
+    //     return (true);
+    // } else {
+    //     return (false);
+    // }
 }
 
 file_model.sanity();

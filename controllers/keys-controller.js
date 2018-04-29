@@ -60,7 +60,7 @@ let key_controller = {
     },
 
     update_file_key: (req,res) => {
-//        const key_pair = req.body.link_data.key_pair,
+      //        const key_pair = req.body.link_data.key_pair,
 //              file_data = req.body.link_data.file_data,
 //              key_model_instance = new key_model();
 //
@@ -71,6 +71,23 @@ let key_controller = {
 //        const file_id = file_controller_instance.get_file_id_by_data(file_data);
 //
 //
+    },
+
+    get_key_by_id: (req,res) => {
+      let key_model_instance = new key_model();
+      key_model_instance.schema.load(req.params.id);
+
+      let key_data = {
+        key_id: key_model_instance.schema.id.value,
+        private_key: key_model_instance.schema.private_key.value
+      }
+
+      if (req.user.schema.id.value != key_model_instance.schema.user.value){
+        req.flash('error', "You do not have access to view this key.");
+        res.redirect('/');
+      }
+
+      res.send(JSON.stringify(key_data));
     }
 };
 

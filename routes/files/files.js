@@ -16,6 +16,8 @@ router.use('/upload', upload_routes);
 
 router.use('/files', fileController.get_files_route);
 
+router.get('/file/:id/retrieve', fileController.get_file_information);
+
 // TODO : Get all files by user ID - requires pulling user from local session
 
 module.exports = router;

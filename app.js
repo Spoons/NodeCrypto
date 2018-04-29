@@ -77,9 +77,9 @@ app.use('*', errorPath_NOT_FOUND);
 
 let USE_SSL = true;
 if (USE_SSL) {
-  var key = fs.readFileSync('keys/nodecrypto.pw.key');
-  var cert = fs.readFileSync( 'keys/nodecrypto.pw.crt' );
-  var ca = fs.readFileSync( 'keys/nodecrypto.pw.csr' );
+  var key = fs.readFileSync('ssl_keys/nodecrypto.pw.key');
+  var cert = fs.readFileSync( 'ssl_keys/nodecrypto.pw.crt' );
+  var ca = fs.readFileSync( 'ssl_keys/nodecrypto.pw.csr' );
 
   var ssl_options = {
     key: key,
@@ -101,8 +101,9 @@ if (USE_SSL) {
   var ssl_server = https.createServer(ssl_options, app);
   ssl_server.listen(process.env.PORT || 3000);
 }
-
+/*
 var httpApp = express();
 httpApp.use(redirectToHTTPS());
 const server = http.createServer(httpApp);
 server.listen(3001);
+*/
