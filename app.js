@@ -79,12 +79,12 @@ let USE_SSL = true;
 if (USE_SSL) {
   var key = fs.readFileSync('ssl_keys/nodecrypto.pw.key');
   var cert = fs.readFileSync( 'ssl_keys/nodecrypto.pw.crt' );
-  var ca = fs.readFileSync( 'ssl_keys/nodecrypto.pw.csr' );
+  //var ca = fs.readFileSync( 'ssl_keys/nodecrypto.pw.csr' );
 
   var ssl_options = {
     key: key,
     cert: cert,
-    ca: ca
+    //ca: ca
   };
 }
 
