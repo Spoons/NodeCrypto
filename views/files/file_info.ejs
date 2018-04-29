@@ -20,12 +20,12 @@
                         <button type="submit" class="btn btn-success btn-lg">Download Encrypted</button>
                     </form>
 
-                    <form action="/<%= user.schema.id.value %>/files/file/<%= file_info.file_id %>/download/raw" method="POST">
+                    <form id="download_and_unencrypt_form">
                         <input type="hidden" name="file_name" value="<%= file_info.file_name %>">
                         <!-- <input type="hidden" name="file_data" value="<%= file_info.file_data %>"> -->
                         <input type="hidden" name="file_ext" value="<%= file_info.file_ext %>">
                         <input type="hidden" name="file_id" value="<%= file_info.file_id %>">
-                        <button type="submit" class="btn btn-success btn-lg">Download Raw</button>
+                        <button class="btn btn-success btn-lg" onclick="unencrypt(event, <%= user.schema.id.value %>)">Download and Decrypt</button>
                     </form>
                 </div>
             </div>
