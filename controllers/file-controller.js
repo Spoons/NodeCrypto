@@ -51,16 +51,17 @@ let file_controller = {
   file_id_get : (req,res) => {
       const fileId = req.params.id;
       const file_model_instance = new file_model();
-
       if (fileId){
           file_model_instance.schema.load(fileId);
           if (file_model_instance.schema.data){
+                console.log(file_model_instance.schema.data.value.length);
                 const schema_data = {
                     file_name: file_model_instance.schema.name.value,
                     file_ext: file_model_instance.schema.extension.value,
-                    file_data: file_model_instance.schema.data.value,
+                    // file_data: file_model_instance.schema.data.value,
                     file_id: file_model_instance.schema.id.value,
-                    uploader_id: file_model_instance.schema.user.value
+                    uploader_id: file_model_instance.schema.user.value,
+                    file_size: (file_model_instance.schema.data.value.length / 1024)
                 }
                 res.render('files/file_info', {file_info: schema_data});
 
@@ -133,10 +134,17 @@ let file_controller = {
   },
 
   file_download_raw: (req,res) => {
-    let file_data = req.body.file_data,
-        file_ext = req.body.file_ext,
+    // let file_data = req.body.file_data,
+    let file_ext = req.body.file_ext,
         file_name = req.body.file_name,
         file_id = req.body.file_id;
+
+    let file_model_instance = new file_model();
+    file_model_instance.load_by_id(file_id);
+
+    let file_data = file_model_instance.schema.data.value;
+
+
 
     let mime_type = (file_data.file_ext == "txt" ? "text/plain" : "application/octet-stream");
 
