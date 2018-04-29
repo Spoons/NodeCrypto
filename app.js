@@ -27,13 +27,13 @@ const express = require('express'),
 
 // App setup
 const app = express();
-app.use(bodyParser.urlencoded({extended: true, limit: '50mb'}));
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser({limit: '50mb'}));
+app.use(bodyParser.urlencoded({extended: true, limit: '250mb'}));
+app.use(bodyParser.json({limit: '250mb'}));
+app.use(bodyParser({limit: '250mb'}));
 app.use(cookieParser());
 app.use(express.static(__dirname + '/dist'));
 app.use(fileUpload({
-  limits: { fieldSize: 50 * 1024 * 1024 },
+  limits: { fieldSize: Math.pow(1024, 3) }, //one gb
 }));
 app.set('view engine','ejs');
 
