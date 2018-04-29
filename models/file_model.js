@@ -77,24 +77,24 @@ file_model.sanity = function() {
     const test_model = new file_model();
     test_model.schema.create_table();
 
-    test_model.set("1", "cats", "txt", "01010101010", "1", "1");
-    let t1 = test_model.to_string();
-    test_model.print();
-
-    const new_model = new file_model();
-
-    new_model.schema.load(1);
-    let t2 = new_model.to_string();
-    new_model.print();
-
-    if (t1 === t2) {
-        console.log("[FILE MODEL]: Sanity check pass!\n");
-        return (true);
-    } else {
-        return (false);
-    }
+    // test_model.set("1", "cats", "txt", "01010101010", "1", "1");
+    // let t1 = test_model.to_string();
+    // test_model.print();
+    //
+    // const new_model = new file_model();
+    //
+    // new_model.schema.load(1);
+    // let t2 = new_model.to_string();
+    // new_model.print();
+    //
+    // if (t1 === t2) {
+    //     console.log("[FILE MODEL]: Sanity check pass!\n");
+    //     return (true);
+    // } else {
+    //     return (false);
+    // }
 }
 
-//file_model.sanity();
+file_model.sanity();
 
 module.exports = file_model;

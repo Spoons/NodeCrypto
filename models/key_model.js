@@ -84,25 +84,24 @@ key_model.sanity = function() {
     test_model.schema.create_table();
 
 // key_model.set: (id: any, name: any, private_key: any, public_key: any, file: any, user: any) => any
-    test_model.set(1, "test_key", test_keys.private_key, test_keys.public_key, 1, 1);
-    let t1 = test_model.to_string();
-    test_model.print();
-
-    const new_model = new key_model();
-
-    new_model.schema.load(1);
-    let t2 = new_model.to_string();
-    new_model.print();
-
-    if (t1 === t2) {
-        console.log("[key MODEL]: Sanity check pass!\n");
-        return (true);
-    } else {
-        console.log("blame zack");
-        return (false);
-    }
+    // test_model.set(1, "test_key", test_keys.private_key, test_keys.public_key, 1, 1);
+    // let t1 = test_model.to_string();
+    // test_model.print();
+    //
+    // const new_model = new key_model();
+    //
+    // new_model.schema.load(1);
+    // let t2 = new_model.to_string();
+    // new_model.print();
+    //
+    // if (t1 === t2) {
+    //     console.log("[key MODEL]: Sanity check pass!\n");
+    //     return (true);
+    // } else {
+    //     console.log("blame zack");
+    //     return (false);
+    // }
 }
 
+key_model.sanity();
 module.exports.key_model = key_model;
-
-//key_model.sanity();

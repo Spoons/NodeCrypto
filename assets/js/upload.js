@@ -121,11 +121,13 @@ function upload_file(file_data, user_id, key_pair){
           file_name_escaped = file_input.value.replace(/\\/g, '/'),
           file_name = file_name_escaped.substr(file_name_escaped.lastIndexOf('/')+1, file_name_escaped.length) + ".gpg";
 
-          if (file_name_escaped.lastIndexOf('.') <= 0){
-            file_extension = file_name_escaped.substr(file_name_escaped.lastIndexOf('.'), file_name_escaped.length) + ".gpg";
-          }else{
-            file_extension = '.gpg';
-          }
+    let file_extension = '';
+
+    if (file_name_escaped.lastIndexOf('.') <= 0){
+      file_extension = file_name_escaped.substr(file_name_escaped.lastIndexOf('.'), file_name_escaped.length) + ".gpg";
+    }else{
+      file_extension = '.gpg';
+    }
 
     // Create new FormData object
     const form_data = new FormData();
