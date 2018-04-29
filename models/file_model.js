@@ -45,7 +45,7 @@ let file_model = function() {
     },
 
     this.schema = Object.assign(this.schema, schema_p);
-    
+
     this.set = function(id, name, extension, data, user, key) {
         try{
             this.schema.id.value = null;
@@ -58,7 +58,7 @@ let file_model = function() {
             return returned_id;
         }catch(err){
             return null;
-        }   
+        }
     },
     this.to_string = function() {
         let prop = this.schema.get_schema_properties();
@@ -71,7 +71,7 @@ let file_model = function() {
     this.print = function() {
         console.log("====================" + this.to_string() + "====================");
     }
-    
+
 }
 file_model.sanity = function() {
     const test_model = new file_model();
@@ -95,6 +95,6 @@ file_model.sanity = function() {
     }
 }
 
-file_model.sanity();
+//file_model.sanity();
 
 module.exports = file_model;

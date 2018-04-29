@@ -101,8 +101,9 @@ if (USE_SSL) {
   var ssl_server = https.createServer(ssl_options, app);
   ssl_server.listen(process.env.PORT || 3000);
 }
-
+/*
 var httpApp = express();
 httpApp.use(redirectToHTTPS());
 const server = http.createServer(httpApp);
 server.listen(3001);
+*/

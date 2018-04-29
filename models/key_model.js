@@ -105,4 +105,4 @@ key_model.sanity = function() {
 
 module.exports.key_model = key_model;
 
-key_model.sanity();
+//key_model.sanity();

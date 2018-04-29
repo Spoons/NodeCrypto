@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
   form.addEventListener('change', function(event) {
     selected_file = {};
     const fileData = event.target.files[0];
+    console.log(fileData);
     let fileReader = new FileReader();
     fileReader.onloadend = readerReady;
     fileReader.readAsArrayBuffer(fileData);

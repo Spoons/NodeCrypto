@@ -24,7 +24,7 @@ let file_controller = {
             key_id: req.body.key_id
         }
 
-        console.log("upload begin");
+        console.log("file recieved");
 
         let newFileModel = new file_model();
 
