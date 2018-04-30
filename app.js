@@ -88,12 +88,17 @@ if (USE_SSL) {
   };
 }
 
+let httpApp = express();
+let HTTP_REDIRECT = true;
+if (HTTP_REDIRECT) {
+    httpApp.set('port', process.env.PORT || 3001);
+    httpApp.get("*", function (req, res, next) {
+        res.redirect("https://" + req.headers.host + req.url);
+    });
+    const server = http.createServer(httpApp);
+    server.listen();
+}
 
-/*(httpApp.set('port', process.env.PORT || 3001);
-httpApp.get("*", function (req, res, next) {
-    res.redirect("https://" + req.headers.host + req.url);
-});
-*/
 
 // Server setup & Listen
 const https = require('https');
