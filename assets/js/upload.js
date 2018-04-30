@@ -177,6 +177,8 @@ const generate_user_key = async function(event_data, user_id){
             return key_pair;
         });
 
+        download_key(key_pair);
+
         store_user_keys(key_pair, user_id, event_data);
     }
 }
@@ -205,4 +207,14 @@ function store_user_keys(key_pair, user_id, event_data){
 
     }
 
+}
+
+function download_key(key_pair){
+    let fileBlob = new Blob([key_pair.private_key], {type: 'text/plain'}),
+        linkToFile = document.createElement('a'),
+        accurate_file_name = key_pair.key_name + '.asc';
+
+    linkToFile.href = window.URL.createObjectURL(fileBlob);
+    linkToFile.download = accurate_file_name;
+    linkToFile.click();
 }
