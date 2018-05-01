@@ -27,13 +27,13 @@ const express = require('express'),
 
 // App setup
 const app = express();
-app.use(bodyParser.urlencoded({extended: true, limit: '50mb'}));
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser({limit: '50mb'}));
+app.use(bodyParser.urlencoded({extended: true, limit: '100mb'}));
+app.use(bodyParser.json({limit: '100mb'}));
+app.use(bodyParser({limit: '100mb'}));
 app.use(cookieParser());
 app.use(express.static(__dirname + '/dist'));
 app.use(fileUpload({
-  limits: { fieldSize: 50 * 1024 * 1024 },
+  limits: { fieldSize: 104857600}, //100 mb
 }));
 app.set('view engine','ejs');
 
@@ -79,21 +79,26 @@ let USE_SSL = true;
 if (USE_SSL) {
   var key = fs.readFileSync('ssl_keys/nodecrypto.pw.key');
   var cert = fs.readFileSync( 'ssl_keys/nodecrypto.pw.crt' );
-  var ca = fs.readFileSync( 'ssl_keys/nodecrypto.pw.csr' );
+  //var ca = fs.readFileSync( 'ssl_keys/nodecrypto.pw.csr' );
 
   var ssl_options = {
     key: key,
     cert: cert,
-    ca: ca
+    //ca: ca
   };
 }
 
+let httpApp = express();
+let HTTP_REDIRECT = true;
+if (HTTP_REDIRECT) {
+    httpApp.set('port', 3001);
+    httpApp.get("*", function (req, res, next) {
+        res.redirect("https://" + req.headers.host + req.url);
+    });
+    const server = http.createServer(httpApp);
+    server.listen(3001);
+}
 
-/*(httpApp.set('port', process.env.PORT || 3001);
-httpApp.get("*", function (req, res, next) {
-    res.redirect("https://" + req.headers.host + req.url);
-});
-*/
 
 // Server setup & Listen
 const https = require('https');

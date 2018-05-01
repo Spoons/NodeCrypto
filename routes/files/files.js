@@ -10,8 +10,6 @@ router.get('/file/:id', fileController.file_id_get);
 
 router.use('/file/:id/download', download_route);
 
-router.get('/file/transfer/:id', fileController.file_transfer_get);
-
 router.use('/upload', upload_routes);
 
 router.use('/files', fileController.get_files_route);

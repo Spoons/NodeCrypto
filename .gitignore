@@ -1,6 +1,7 @@
 package-lock.json
 *.swp
 *.swo
+*.swn
 *.db
 node_modules/
 dist/

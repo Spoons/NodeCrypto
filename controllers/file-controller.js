@@ -53,21 +53,26 @@ let file_controller = {
       const file_model_instance = new file_model();
       if (fileId){
           file_model_instance.schema.load(fileId);
-          if (file_model_instance.schema.data){
-                console.log(file_model_instance.schema.data.value.length);
-                const schema_data = {
-                    file_name: file_model_instance.schema.name.value,
-                    file_ext: file_model_instance.schema.extension.value,
-                    // file_data: file_model_instance.schema.data.value,
-                    file_id: file_model_instance.schema.id.value,
-                    uploader_id: file_model_instance.schema.user.value,
-                    file_size: (file_model_instance.schema.data.value.length / 1024)
-                }
-                res.render('files/file_info', {file_info: schema_data});
+          if (req.user.schema.id.value == file_model_instance.schema.user.value){
+              if (file_model_instance.schema.data){
+                    console.log(file_model_instance.schema.data.value.length);
+                    const schema_data = {
+                        file_name: file_model_instance.schema.name.value,
+                        file_ext: file_model_instance.schema.extension.value,
+                        // file_data: file_model_instance.schema.data.value,
+                        file_id: file_model_instance.schema.id.value,
+                        uploader_id: file_model_instance.schema.user.value,
+                        file_size: (file_model_instance.schema.data.value.length / 1024)
+                    }
+                    res.render('files/file_info', {file_info: schema_data});
 
+              }else{
+                  req.flash('error_message', {message: "Something went wrong, please try again."});
+                  res.render('/files/');
+              }
           }else{
-              req.flash('error_message', {message: "Something went wrong, please try again."});
-              res.render('/files/');
+              req.flash('error', "You do not have access to view this file.");
+              res.redirect('/');
           }
       }else{
           req.flash('error_message', {message: "Unable to obtain file ID"});
@@ -80,16 +85,22 @@ let file_controller = {
     const file_model_instance = new file_model();
     if (fileId){
         file_model_instance.schema.load(fileId);
-        if (file_model_instance.schema.data){
-              const file_and_key_data = {
-                  file_data: file_model_instance.schema.data.value,
-                  key_id: file_model_instance.schema.key.value,
-                  file_name: file_model_instance.schema.name.value
-              }
-              res.send(JSON.stringify(file_and_key_data));
+
+        if (req.user.schema.id.value == file_model_instance.schema.user.value){
+            if (file_model_instance.schema.data){
+                  const file_and_key_data = {
+                      file_data: file_model_instance.schema.data.value,
+                      key_id: file_model_instance.schema.key.value,
+                      file_name: file_model_instance.schema.name.value
+                  }
+                  res.send(JSON.stringify(file_and_key_data));
+            }else{
+                req.flash('error_message', {message: "Something went wrong, please try again."});
+                res.send("Err: No data for file found");
+            }
         }else{
-            req.flash('error_message', {message: "Something went wrong, please try again."});
-            res.send("Err: No data for file found");
+            req.flash('error', "You do not have access to view this file information.");
+            res.redirect('/');
         }
     }else{
         req.flash('error_message', {message: "Unable to obtain file ID"});
@@ -147,13 +158,20 @@ let file_controller = {
         file_model_instance = new file_model();
 
     file_model_instance.schema.load(file_id);
-    let file_data = file_model_instance.schema.data.value;
+    if (req.user.schema.id.value == file_model_instance.schema.user.value){
 
-    let mime_type = "application/octet-stream";
-    res.setHeader('Content-disposition', 'attachment; filename=' + file_name);
-    res.setHeader('Content-type', mime_type);
-    var contents = new Buffer(file_data);
-    return res.send(200, contents);
+        console.log(req.user.schema.id.value + " is currently downloading file " + file_model_instance.schema.name.value);
+        let file_data = file_model_instance.schema.data.value;
+
+        let mime_type = "application/octet-stream";
+        res.setHeader('Content-disposition', 'attachment; filename=' + file_name);
+        res.setHeader('Content-type', mime_type);
+        var contents = new Buffer(file_data);
+        return res.send(200, contents);
+    }else{
+        req.flash('error', "You do not have access to download this file.");
+        res.redirect('/');
+    }
   },
 
   get_file_id_by_data: (data) => {
