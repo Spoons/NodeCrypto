@@ -1,5 +1,5 @@
 <%- include ../../partials/_header.ejs %>
-          
+
 
       <main>
         <div class="jumbotron small">
@@ -15,21 +15,14 @@
                    <% KEYS.forEach(function(key){ %>
                         <li class="name">
                            Key: <strong><%= key.name %></strong>
-                        </li>    
+                        </li>
                    <% }) %>
-                   </ul> 
+                   </ul>
                <% }else{ %>
                    <p>There are no keys currently associated with your account.</p>
                <% } %>
-
-                <div class="center-content">
-                    <a class="btn btn-primary btn-lg btn-success"
-                    onclick="promptPGP('<%= user.schema.id.value %>')">
-                        Generate New Key
-                    </a>
-                </div>
-            </div>
+             </div>
         </div>
     </main>
-    
+
 <%- include ../../partials/_footer.ejs %>
