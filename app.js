@@ -27,13 +27,13 @@ const express = require('express'),
 
 // App setup
 const app = express();
-app.use(bodyParser.urlencoded({extended: true, limit: '250mb'}));
-app.use(bodyParser.json({limit: '250mb'}));
-app.use(bodyParser({limit: '250mb'}));
+app.use(bodyParser.urlencoded({extended: true, limit: '100mb'}));
+app.use(bodyParser.json({limit: '100mb'}));
+app.use(bodyParser({limit: '100mb'}));
 app.use(cookieParser());
 app.use(express.static(__dirname + '/dist'));
 app.use(fileUpload({
-  limits: { fieldSize: Math.pow(1024, 3) }, //one gb
+  limits: { fieldSize: 104857600}, //100 mb
 }));
 app.set('view engine','ejs');
 
@@ -91,12 +91,12 @@ if (USE_SSL) {
 let httpApp = express();
 let HTTP_REDIRECT = true;
 if (HTTP_REDIRECT) {
-    httpApp.set('port', process.env.PORT || 3001);
+    httpApp.set('port', 3001);
     httpApp.get("*", function (req, res, next) {
         res.redirect("https://" + req.headers.host + req.url);
     });
     const server = http.createServer(httpApp);
-    server.listen();
+    server.listen(3001);
 }
 
 
