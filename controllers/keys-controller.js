@@ -16,7 +16,6 @@ let key_controller = {
         const key_model_instance = new key_model();
 
         const all_keys = key_model_instance.schema.load_multiple(user_id, 'user');
-        //console.log(all_keys);
         return all_keys;
     },
 
@@ -25,8 +24,7 @@ let key_controller = {
               key_model_instance = new key_model();
 
         if (req.params.pref_key != "none"){
-
-            key_model_instance.schema.load(req.params.pref_key, "name", "string");
+            key_model_instance.schema.load(req.params.pref_key);
 
             key_model_instance.to_string();
         }else{
@@ -47,14 +45,12 @@ let key_controller = {
               key_name = req.body.key_name;
 
         const key_model_instance = new key_model();
-        console.log("Storing key with name " + key_name + " in database.");
         key_model_instance.set(null, key_name, req.body.private_key, req.body.public_key, -1, user_id);
 
         const keyObj = {
           key_id: key_model_instance.schema.id.value
         }
         res.setHeader("Content-Type", "application/json");
-        //console.log(keyObj);
         res.send(JSON.stringify(keyObj));
 
     },
