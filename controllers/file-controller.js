@@ -24,7 +24,7 @@ let file_controller = {
             key_id: req.body.key_id
         }
 
-        console.log("file recieved");
+        console.log("file recieved of size " + uploaded_file.file_data.length);
 
         let newFileModel = new file_model();
 
@@ -55,7 +55,6 @@ let file_controller = {
           file_model_instance.schema.load(fileId);
           if (req.user.schema.id.value == file_model_instance.schema.user.value){
               if (file_model_instance.schema.data){
-                    console.log(file_model_instance.schema.data.value.length);
                     const schema_data = {
                         file_name: file_model_instance.schema.name.value,
                         file_ext: file_model_instance.schema.extension.value,

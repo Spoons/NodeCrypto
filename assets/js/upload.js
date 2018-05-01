@@ -138,15 +138,19 @@ function upload_file(file_data, user_id, key_pair){
     form_data.append('file_extension', file_extension);
     form_data.append('enc_file_data', file_data);
     form_data.append('key_id', key_pair.key_id);
-    //form_data.append('key_id', )
+    
+    alert("Please wait while file is being uploaded...");
 
     // XMLHttpRequest POST form data
     const xhr = new XMLHttpRequest();
     xhr.open("POST", query);
     xhr.send(form_data);
 
-    alert("File uploaded successfully.");
-    window.location = base_url + user_id + '/files/files';
+    xhr.onloadend = function(){
+        alert("File uploaded successfully.");
+        window.location = base_url + user_id + '/files/files';    
+    }
+    
 };
 
 // Generates a new user key if none are available
